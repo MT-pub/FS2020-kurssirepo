@@ -95,6 +95,7 @@ function App() {
         <div>
           {testButtons()}
         </div>
+        {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
         <div className="test">
           <DrawTest data={data} showAnswers={showAnswers}
             answers={answers} testIndex={test} handleCheckbox={handleCheckbox} />
