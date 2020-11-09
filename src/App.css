@@ -17,7 +17,7 @@
   margin: auto;
   margin-top: 75px;
   text-align: left;
-  width: 1200px;
+  width: 70em;
   padding-top: 15px;
 }
 
@@ -25,9 +25,18 @@
   padding:0px;
 }
 
-.question {
-  margin:0px;
+.questionCard {
+  margin:5px;
   padding: 10px;
+  width: 65em;
+}
+
+.questionItem {
+  width: 60em;
+}
+
+.answerItem {
+  width: 57.4em;
 }
 
 .App-logo {

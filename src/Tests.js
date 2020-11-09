@@ -3,47 +3,46 @@ import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react'
 import { Button } from '@material-ui/core'
-import DrawTest from './DrawTest'
+import EditTest from './EditTest';
 
 function Tests() {
   const initialData = [{
-    tentti: "Elektroniikka",
-    kysymykset: [{
-      kysymys: "Mikä seuraavista on Ohmin laki?",
-      vastaukset: [{ vastaus: "U = R * I", valittu: false, oikea: true },
-      { vastaus: "U = R / I", valittu: false, oikea: false },
-      { vastaus: "U = R^2 * I", valittu: false, oikea: false },
-      { vastaus: "U = R / I^2", valittu: false, oikea: false }]
+    test: "Elektroniikka",
+    questions: [{
+      question: "Mikä seuraavista on Ohmin laki?",
+      answers: [{ answer: "U = R * I", checked: false, correct: true },
+      { answer: "U = R / I", checked: false, correct: false },
+      { answer: "U = R^2 * I", checked: false, correct: false },
+      { answer: "U = R / I^2", checked: false, correct: false }]
     },
     {
-      kysymys: "Mikä on Kirchhoffin virtalaki?",
-      vastaukset: [{ vastaus: "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu", valittu: false, oikea: false },
-      { vastaus: "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu", valittu: false, oikea: false },
-      { vastaus: "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu", valittu: false, oikea: false },
-      { vastaus: "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu", valittu: false, oikea: true }]
+      question: "Mikä on Kirchhoffin virtalaki?",
+      answers: [{ answer: "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: false },
+      { answer: "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu", checked: false, correc: false },
+      { answer: "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu", checked: false, correc: false },
+      { answer: "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu", checked: false, correc: true }]
     }]
   },
   {
-    tentti: "Matematiikka",
-    kysymykset: [{
-      kysymys: "Kuinka paljon on 1 + 1?",
-      vastaukset: [{ vastaus: "4", valittu: false, oikea: false },
-      { vastaus: "3", valittu: false, oikea: false },
-      { vastaus: "2", valittu: false, oikea: true },
-      { vastaus: "1", valittu: false, oikea: false }]
+    test: "Matematiikka",
+    questions: [{
+      question: "Kuinka paljon on 1 + 1?",
+      answers: [{ answer: "4", checked: false, correct: false },
+      { answer: "3", checked: false, correct: false },
+      { answer: "2", checked: false, correct: true },
+      { answer: "1", checked: false, correct: false }]
     },
     {
-      kysymys: "Kuinka paljon on 12345 + 54321?",
-      vastaukset: [{ vastaus: "1234554321", valittu: false, oikea: false },
-      { vastaus: "123454321", valittu: false, oikea: false },
-      { vastaus: "66666", valittu: false, oikea: true },
-      { vastaus: "55555", valittu: false, oikea: false }]
+      question: "Kuinka paljon on 12345 + 54321?",
+      answers: [{ answer: "1234554321", checked: false, correc: false },
+      { answer: "123454321", checked: false, correct: false },
+      { answer: "66666", checked: false, correct: true },
+      { answer: "55555", checked: false, correct: false }]
     }]
   }];
 
   const [data, setData] = useState([])
   const [test, setTest] = useState("")
-  const [answers, setAnswers] = useState(false)
   const [fetchData, setFetchData] = useState(true)
 
   useEffect(() => {
@@ -65,20 +64,16 @@ function Tests() {
 
   const handleCheckbox = (event, qIndex, aIndex) => {
     var tempData = JSON.parse(JSON.stringify(data))
-    tempData[test].kysymykset[qIndex].vastaukset[aIndex].valittu = event.target.checked
+    tempData[test].questions[qIndex].answers[aIndex].correct = event.target.checked
     setData(tempData)
-  }
-
-  const showAnswers = () => {
-    setAnswers(true)
   }
 
   const testButtons = () => {
     if (data !== []) {
       return (data.map((item, index) =>
-        <Button key={"" + index + data[index].tentti}
-          color="primary" onClick={() => { setTest("" + index); setAnswers(false); }}>
-          {item.tentti}
+        <Button key={"" + index + data[index].test}
+          color="primary" onClick={() => { setTest("" + index)}}>
+          {item.test}
         </Button>
       ))
     }
@@ -97,8 +92,8 @@ function Tests() {
         </div>
         {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
         <div className="test">
-          <DrawTest data={data} showAnswers={showAnswers}
-            answers={answers} testIndex={test} handleCheckbox={handleCheckbox} />
+          <EditTest data={data}
+            testIndex={test} handleCheckbox={handleCheckbox} />
         </div>
       </div>
     </div >

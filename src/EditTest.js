@@ -1,70 +1,70 @@
-import { Paper, Checkbox, FormControlLabel, Button } from '@material-ui/core'
-import { green } from '@material-ui/core/colors'
-import { withStyles } from '@material-ui/core/styles';
+import { Paper, Checkbox, TextField, IconButton, Icon } from '@material-ui/core'
 
-const GreenCheckbox = withStyles({
-  root: {
-    color: green[400],
-    '&$checked': {
-      color: green[600],
-    },
-  },
-  checked: {},
-})((props) => <Checkbox color="default" {...props} />);
 
-function DrawTest(props) {
+function EditTest(props) {
   const drawQuestion = (q, qIndex) => {
-    return (<Paper key={props.data[props.testIndex].tentti + qIndex}>
-      <div>
-        {q.kysymys} <br />
-        {q.vastaukset.map((item, index) => {
-          return (drawAnswer(item, index, qIndex))
-        })}
-      </div>
-    </Paper>)
+    return (
+      <Paper key={props.data[props.testIndex].test + qIndex}
+        className="questionCard">
+        <div>
+          <TextField
+            className="questionItem"
+            value={q.question}
+            variant="outlined" />
+          <IconButton size="medium"
+            onClick={(event) => props.removeQuestion(event, qIndex)}>
+            <Icon>delete</Icon>
+          </IconButton>
+          <br />
+          {q.answers.map((item, index) => {
+            return (drawAnswer(item, index, qIndex))
+          })}
+          <br />
+          <IconButton size="medium"
+            className="answer"
+            onClick={(event) => props.addAnswer(event, qIndex)}>
+            <Icon>add-circle</Icon>
+            <span>&nbsp;Lisää vastaus</span>
+          </IconButton>
+        </div>
+      </Paper>)
   }
 
   const drawAnswer = (a, aIndex, qIndex) => {
     return (
-      <div key={a.vastaus + props.testIndex + qIndex + aIndex}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              color={props.answers ? "primary" : "secondary"}
-              checked={a.valittu}
-              onChange={props.answers ? null : (event) => props.handleCheckbox(event, qIndex, aIndex)}
-            />
-          }
-          label={props.answers ? null : a.vastaus}
+      <div key={a.answer + props.testIndex + qIndex + aIndex}>
+        <Checkbox
+          color={props.answers ? "primary" : "secondary"}
+          checked={a.correct}
+          onChange={(event) => props.handleCheckbox(event, qIndex, aIndex)}
         />
-        {props.answers ?
-          <FormControlLabel
-            control={
-              <GreenCheckbox
-                checked={a.oikea}
-              />
-            }
-            label={props.answers ? a.vastaus : null} /> :
-          null}
+        <TextField
+        className="answerItem"
+          value={a.answer}
+          onChange={(event) => props.handleAnswer(event, qIndex, aIndex)}
+          variant="outlined" />
+        <IconButton size="medium"
+          onClick={(event) => props.removeAnswer(event, qIndex, aIndex)}>
+          <Icon>delete</Icon>
+        </IconButton>
         <br />
       </div>
     )
   }
 
   if (props.testIndex !== "") {
-    //console.log(props.data[props.testIndex].tentti)
+    //console.log(props.data[props.testIndex].test)
     return (
       <>
-        {props.data[props.testIndex].kysymykset.map((item, index) => {
+        {props.data[props.testIndex].questions.map((item, index) => {
           return (drawQuestion(item, index));
         })}
-        {props.answers ? null : <div>
-          <Button key={props.data[props.testIndex].tentti + "showAnswers"}
-            variant="contained"
-            color="primary" onClick={() => { props.showAnswers() }}>
-            Näytä vastaukset
-          </Button>
-        </div>}
+        <IconButton size="medium"
+          className="answer"
+          onClick={(event) => props.addQuestion(event)}>
+          <Icon>add-circle</Icon>
+          <span>&nbsp;Lisää kysymys</span>
+        </IconButton>
       </>
     )
   } else {
@@ -72,4 +72,4 @@ function DrawTest(props) {
   }
 }
 
-export default DrawTest;
+export default EditTest;
