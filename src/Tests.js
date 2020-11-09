@@ -2,7 +2,7 @@ import React from 'react'
 import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react'
-import { Button, Icon, IconButton } from '@material-ui/core'
+import { Button, Icon, IconButton, AppBar, Toolbar } from '@material-ui/core'
 import EditTest from './EditTest';
 
 function Tests() {
@@ -161,9 +161,13 @@ function Tests() {
 
   return (
     <div className="App">
-      <div className="menu">
-        <button>testimenunappi</button>
-      </div>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Button>
+            Testinappi
+          </Button>
+        </Toolbar>
+      </AppBar>
       <div className="page">
         <div>
           {testButtons()}
