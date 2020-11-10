@@ -54,19 +54,19 @@ function EditTest(props) {
   }
 
   if (props.testIndex !== "") {
-    //console.log(props.data[props.testIndex].test)
+    //console.log(props.testData.test)
     return (
       <>
       <TextField
         className="questionItem"
-          value={props.data[props.testIndex].test}
+          value={props.testData.test}
           onChange={(event) => props.handleTest(event)}
           variant="outlined" />
           <IconButton size="medium"
           onClick={() => props.removeTest()}>
           <Icon>delete</Icon>
         </IconButton>
-        {props.data[props.testIndex].questions.map((item, index) => {
+        {props.testData.questions.map((item, index) => {
           return (drawQuestion(item, index));
         })}
         <IconButton size="medium"

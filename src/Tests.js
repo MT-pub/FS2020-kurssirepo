@@ -174,7 +174,7 @@ function Tests() {
         </div>
         {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
         <div className="test">
-          <EditTest data={data}
+          <EditTest testData={data[test]}
             testIndex={test}
             handleCheckbox={handleCheckbox} handleAnswer={handleAnswer}
             handleQuestion={handleQuestion} handleTest={handleTest}

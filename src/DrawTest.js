@@ -14,10 +14,10 @@ const GreenCheckbox = withStyles({
 
 function DrawTest(props) {
   const drawQuestion = (q, qIndex) => {
-    return (<Paper key={props.data[props.testIndex].tentti + qIndex}>
+    return (<Paper key={"question" + props.testIndex + qIndex}>
       <div>
-        {q.kysymys} <br />
-        {q.vastaukset.map((item, index) => {
+        {q.question} <br />
+        {q.answers.map((item, index) => {
           return (drawAnswer(item, index, qIndex))
         })}
       </div>
@@ -26,25 +26,25 @@ function DrawTest(props) {
 
   const drawAnswer = (a, aIndex, qIndex) => {
     return (
-      <div key={a.vastaus + props.testIndex + qIndex + aIndex}>
+      <div key={"answer" + props.testIndex + qIndex + aIndex}>
         <FormControlLabel
           control={
             <Checkbox
               color={props.answers ? "primary" : "secondary"}
-              checked={a.valittu}
+              checked={a.checked}
               onChange={props.answers ? null : (event) => props.handleCheckbox(event, qIndex, aIndex)}
             />
           }
-          label={props.answers ? null : a.vastaus}
+          label={props.answers ? null : a.answer}
         />
         {props.answers ?
           <FormControlLabel
             control={
               <GreenCheckbox
-                checked={a.oikea}
+                checked={a.correct}
               />
             }
-            label={props.answers ? a.vastaus : null} /> :
+            label={props.answers ? a.answer : null} /> :
           null}
         <br />
       </div>
@@ -52,17 +52,17 @@ function DrawTest(props) {
   }
 
   if (props.testIndex !== "") {
-    //console.log(props.data[props.testIndex].tentti)
+    //console.log(props.test.test)
     return (
       <>
-        {props.data[props.testIndex].kysymykset.map((item, index) => {
+        {props.testData.questions.map((item, index) => {
           return (drawQuestion(item, index));
         })}
         {props.answers ? null : <div>
-          <Button key={props.data[props.testIndex].tentti + "showAnswers"}
+          <Button key={props.testData.test + "showAnswers"}
             variant="contained"
             color="primary" onClick={() => { props.showAnswers() }}>
-            Näytä vastaukset
+            Näytä answers
           </Button>
         </div>}
       </>
