@@ -4,7 +4,6 @@ import './App.css';
 import { useState, useEffect } from 'react'
 import { Button } from '@material-ui/core'
 import DrawTest from './DrawTest'
-import Axios from 'axios'
 
 function App() {
   const initialData = [{
@@ -48,13 +47,14 @@ function App() {
   const [fetchData, setFetchData] = useState(true)
 
   useEffect(() => {
-    const remData = async () => {
-      let result = await Axios.get("http://localhost:3001/tests/")
-      setData(result.data)
-      setFetchData(false)
+    let tempStorage = window.localStorage;
+    let tempData = JSON.parse(tempStorage.getItem("data"))
+    if (!tempData || tempData === []) {
+      tempStorage.setItem("data", JSON.stringify(initialData))
+      tempData = initialData
     }
-
-    remData()
+    setData(tempData)
+    setFetchData(false)
   }, [])
 
   useEffect(() => {
@@ -85,8 +85,8 @@ function App() {
   }
 
 
-console.log(data)
-  if(data){return (
+
+  return (
     <div className="App">
       <div className="menu">
         <button>testimenunappi</button>
@@ -102,7 +102,7 @@ console.log(data)
         </div>
       </div>
     </div >
-  );} else {return null}
+  );
 }
 
 export default App;

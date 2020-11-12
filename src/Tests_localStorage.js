@@ -4,11 +4,9 @@ import './App.css';
 import { useState, useEffect } from 'react'
 import { Button, Icon, IconButton, AppBar, Toolbar } from '@material-ui/core'
 import EditTest from './EditTest';
-import axios from 'axios'
 
 function Tests() {
   const initialData = [{
-    id:0,
     test: "Elektroniikka",
     questions: [{
       question: "Mikä seuraavista on Ohmin laki?",
@@ -26,7 +24,6 @@ function Tests() {
     }]
   },
   {
-    id:1,
     test: "Matematiikka",
     questions: [{
       question: "Kuinka paljon on 1 + 1?",
@@ -48,51 +45,20 @@ function Tests() {
   const [test, setTest] = useState("")
   const [fetchData, setFetchData] = useState(true)
 
-  const createRemData = async () => {
-    try {
-      let result = await axios.post("http://localhost:3001/tests", initialData)
-    }
-    catch (exception) {
-      alert("Tietokannan alustaminen epäonnistui")
-    }
-  }
-
-  const fetchRemData = async () => {
-    try {
-      let result = await axios.get("http://localhost:3001/tests")
-      console.log(result)
-      if (result.data.length > 0) {
-        //console.log("fetchIf")
-        setData(result.data)
-        setFetchData(false)
-      } else {
-        console.log("Ei dataa.. luodaan..")
-        createRemData()
-      }
-    }
-    catch (exception) {
-      
-      console.log(exception,"exceptionfetchremdata")
-    }
-  }
-
-  const saveRemData = async () => {
-    try {
-      let result = await axios.put("http://localhost:3001/tests", data)
-    }
-    catch (exception) {
-      console.log(exception)
-    }
-  }
-
   useEffect(() => {
-    fetchRemData()
+    let tempStorage = window.localStorage;
+    let tempData = JSON.parse(tempStorage.getItem("data"))
+    if (!tempData || tempData === []) {
+      tempStorage.setItem("data", JSON.stringify(initialData))
+      tempData = initialData
+    }
+    setData(tempData)
+    setFetchData(false)
   }, [])
 
   useEffect(() => {
-
     if (!fetchData) {
-      saveRemData()
+      window.localStorage.setItem("data", JSON.stringify(data))
     }
   }, [data])
 

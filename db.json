@@ -1,0 +1,116 @@
+{
+  "tests": [
+    {
+      "id": 0,
+      "test": "Elektroniikka",
+      "questions": [
+        {
+          "question": "Mikä seuraavista on Ohmin laki?",
+          "answers": [
+            {
+              "answer": "U = R * I",
+              "checked": false,
+              "correct": true
+            },
+            {
+              "answer": "U = R / I",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "U = R^2 * I",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "U = R / I^2",
+              "checked": false,
+              "correct": false
+            }
+          ]
+        },
+        {
+          "question": "Mikä on Kirchhoffin virtalaki?",
+          "answers": [
+            {
+              "answer": "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu",
+              "checked": false,
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "test": "Matematiikka",
+      "questions": [
+        {
+          "question": "Kuinka paljon on 1 + 1?",
+          "answers": [
+            {
+              "answer": "4",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "3",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "2",
+              "checked": false,
+              "correct": true
+            },
+            {
+              "answer": "1",
+              "checked": false,
+              "correct": false
+            }
+          ]
+        },
+        {
+          "question": "Kuinka paljon on 12345 + 54321?",
+          "answers": [
+            {
+              "answer": "1234554321",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "123454321",
+              "checked": false,
+              "correct": false
+            },
+            {
+              "answer": "66666",
+              "checked": false,
+              "correct": true
+            },
+            {
+              "answer": "55555",
+              "checked": false,
+              "correct": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
