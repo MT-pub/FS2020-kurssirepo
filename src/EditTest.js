@@ -1,19 +1,21 @@
 import { Paper, Checkbox, TextField, IconButton, Icon } from '@material-ui/core'
 
 
-function EditTest(props) {
+function EditTest({ testData, testIndex, dispatch }) {
   const drawQuestion = (q, qIndex) => {
     return (
-      <Paper key={"question" + props.testIndex + qIndex}
+      <Paper key={"question" + testIndex + qIndex}
         className="questionCard">
         <div>
           <TextField
             className="questionItem"
             value={q.question}
-            onChange={(event) => props.handleQuestion(event, qIndex)}
+            onChange={(event) =>
+              dispatch({ type: "handleQuestion", event: event, qIndex: qIndex })}
             variant="outlined" />
           <IconButton size="medium"
-            onClick={() => props.removeQuestion(qIndex)}>
+            onClick={() =>
+              dispatch({ type: "removeQuestion", qIndex: qIndex })}>
             <Icon>delete</Icon>
           </IconButton>
           <br />
@@ -23,7 +25,8 @@ function EditTest(props) {
           <br />
           <IconButton size="medium"
             className="answer"
-            onClick={() => props.addAnswer(qIndex)}>
+            onClick={() =>
+              dispatch({ type: "addAnswer", qIndex: qIndex })}>
             <Icon>add-circle</Icon>
             <span>&nbsp;Lisää vastaus</span>
           </IconButton>
@@ -33,19 +36,22 @@ function EditTest(props) {
 
   const drawAnswer = (a, aIndex, qIndex) => {
     return (
-      <div key={"answer" + props.testIndex + qIndex + aIndex}>
+      <div key={"answer" + testIndex + qIndex + aIndex}>
         <Checkbox
-          color={props.answers ? "primary" : "secondary"}
+          color={"secondary"}
           checked={a.correct}
-          onChange={(event) => props.handleCheckbox(event, qIndex, aIndex)}
+          onChange={(event) =>
+            dispatch({ type: "handleCheckbox", event: event, qIndex: qIndex, aIndex: aIndex })}
         />
         <TextField
-        className="answerItem"
+          className="answerItem"
           value={a.answer}
-          onChange={(event) => props.handleAnswer(event, qIndex, aIndex)}
+          onChange={(event) =>
+            dispatch({ type: "handleAnswer", event: event, qIndex: qIndex, aIndex: aIndex })}
           variant="outlined" />
         <IconButton size="medium"
-          onClick={() => props.removeAnswer(qIndex, aIndex)}>
+          onClick={() =>
+            dispatch({ type: "removeAnswer", qIndex: qIndex, aIndex: aIndex })}>
           <Icon>delete</Icon>
         </IconButton>
         <br />
@@ -53,25 +59,30 @@ function EditTest(props) {
     )
   }
 
-  if (props.testIndex !== "") {
-    //console.log(props.testData.test)
+  /* console.log("testData: ",testData)
+  console.log("testIndex: ",testIndex) */
+  if (testIndex !== "") {
+    //console.log(testData.test)
     return (
       <>
-      <TextField
-        className="questionItem"
-          value={props.testData.test}
-          onChange={(event) => props.handleTest(event)}
+        <TextField
+          className="questionItem"
+          value={testData.test}
+          onChange={(event) =>
+            dispatch({ type: "handleTest", event: event })}
           variant="outlined" />
-          <IconButton size="medium"
-          onClick={() => props.removeTest()}>
+        <IconButton size="medium"
+          onClick={() =>
+            dispatch({ type: "removeTest" })}>
           <Icon>delete</Icon>
         </IconButton>
-        {props.testData.questions.map((item, index) => {
+        {testData.questions.map((item, index) => {
           return (drawQuestion(item, index));
         })}
         <IconButton size="medium"
           className="answer"
-          onClick={() => props.addQuestion()}>
+          onClick={() =>
+            dispatch({ type: "addQuestion" })}>
           <Icon>add-circle</Icon>
           <span>&nbsp;Lisää kysymys</span>
         </IconButton>

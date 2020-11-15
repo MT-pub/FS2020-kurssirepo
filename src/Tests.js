@@ -45,21 +45,23 @@ const initialData = [{
 function reducer(state, action) {
   let deepCopy = JSON.parse(JSON.stringify(state));
 
+  console.log(deepCopy)
+
   switch (action.type) {
     case 'handleCheckbox':
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
         .answers[action.aIndex].correct = action.event.target.checked
       return deepCopy
     case 'handleTest':
-      deepCopy[test].test = action.event.target.value
+      deepCopy.data[deepCopy.activeTest].test = action.event.target.value
       return deepCopy
     case 'handleQuestion':
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex].question = action.event.target.value
       return deepCopy
     case 'handleAnswer':
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
         .answers[action.aIndex].answer = action.event.target.value
     case 'addTest':
@@ -67,14 +69,14 @@ function reducer(state, action) {
         test: "test",
         questions: []
       }
-      deepCopy.push(emptyTest)
+      deepCopy.data.push(emptyTest)
       return deepCopy
     case 'addQuestion':
       let emptyQuestion = {
         question: "question",
         answers: []
       }
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions.push(emptyQuestion)
       return deepCopy
     case 'addAnswer':
@@ -83,25 +85,34 @@ function reducer(state, action) {
         checked: false,
         correct: false
       }
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
         .answers.push(emptyAnswer)
       return deepCopy
     case 'removeTest':
-      deepCopy.splice(test, 1)
-      setTest("")
+      deepCopy.data.splice(deepCopy.activeTest, 1)
+      deepCopy.activeTest = ""
       return deepCopy
     case 'removeQuestion':
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions.splice(action.qIndex, 1)
       return deepCopy
     case 'removeAnswer':
-      deepCopy[test]
+      deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
         .answers.splice(action.aIndex, 1)
       return deepCopy
+    /* case 'setFetchData':
+      deepCopy.fetchData = action.fetchData
+      return deepCopy */
+    case 'setTest':
+      deepCopy.activeTest = action.test
+      //console.log(deepCopy.test)
+      return deepCopy
     case 'INIT_DATA':
-      return action.data
+      deepCopy.fetchData = action.fetchData
+      deepCopy.data = action.data
+      return deepCopy
     default:
       throw new Error('No action specified')
   }
@@ -109,16 +120,12 @@ function reducer(state, action) {
 
 function Tests() {
 
-  const [state, dispatch] = useReducer(reducer, []);
-  const [data, setData] = useState([]);
-  const [test, setTest] = useState("");
-  const [fetchData, setFetchData] = useState(true);
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true });
 
   const createRemData = async () => {
     try {
       let result = await axios.post("http://localhost:3001/tests", initialData)
-      dispatch({ type: "INIT_DATA", data: initialData})
-      setFetchData(false)
+      dispatch({ type: "INIT_DATA", data: initialData, fetchData: false })
     }
     catch (exception) {
       alert("Tietokannan alustaminen epäonnistui")
@@ -128,28 +135,27 @@ function Tests() {
   const fetchRemData = async () => {
     try {
       let result = await axios.get("http://localhost:3001/tests")
-      console.log(result)
+      //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
-        setData(result.data)
-        setFetchData(false)
+        dispatch({ type: "INIT_DATA", data: result.data, fetchData: false })
       } else {
         throw ("Ei dataa.. luodaan..")
 
       }
     }
     catch (exception) {
-      console.log("exceptionFetchRemdata: ", exception)
+      console.log(exception)
       createRemData()
     }
   };
 
   const saveRemData = async () => {
     try {
-      let result = await axios.put("http://localhost:3001/tests", state)
+      let result = await axios.put("http://localhost:3001/tests", state.data)
     }
     catch (exception) {
-      console.log("Datan päivitys ei onnistunut")
+      console.log("Datan päivitys ei onnistunut ", exception)
     }
   };
 
@@ -159,10 +165,10 @@ function Tests() {
 
   useEffect(() => {
 
-    if (!fetchData) {
+    if (!state.fetchData) {
       saveRemData()
     }
-  }, [data])
+  }, [state.data])
 
   /*  const handleCheckbox = (event, qIndex, aIndex) => {
      var tempData = JSON.parse(JSON.stringify(data))
@@ -240,17 +246,17 @@ function Tests() {
 
 
   const testButtons = () => {
-    if (state !== []) {
+    if (state.data !== []) {
       return (
         <>
-          {state.map((item, index) =>
-            <Button key={"" + index + data[index].test}
-              color="primary" onClick={() => { setTest("" + index) }}>
+          {state.data.map((item, index) =>
+            <Button key={"" + index + state.data[index].test}
+              color="primary" onClick={() => { dispatch({ type: "setTest", test: index }) }}>
               {item.test}
             </Button>)}
           <IconButton size="medium"
             className="answer"
-            onClick={() => addTest()}>
+            onClick={() => dispatch({ type: "addTest" })}>
             <Icon>add-circle</Icon>
             <span>&nbsp;Lisää tentti</span>
           </IconButton>
@@ -258,8 +264,6 @@ function Tests() {
       )
     }
   };
-
-
 
   return (
     <div className="App">
@@ -276,13 +280,9 @@ function Tests() {
         </div>
         {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
         <div className="test">
-          <EditTest testData={state[test]}
-            testIndex={test}
-            handleCheckbox={handleCheckbox} handleAnswer={handleAnswer}
-            handleQuestion={handleQuestion} handleTest={handleTest}
-            addQuestion={addQuestion} removeQuestion={removeQuestion}
-            addAnswer={addAnswer} removeAnswer={removeAnswer}
-            removeTest={removeTest} />
+          <EditTest testData={state.data[state.activeTest]}
+            testIndex={state.activeTest}
+            dispatch={dispatch} />
         </div>
       </div>
     </div >
