@@ -170,6 +170,80 @@ function Tests() {
     }
   }, [state.data])
 
+  /*  const handleCheckbox = (event, qIndex, aIndex) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData[test].questions[qIndex].answers[aIndex].correct = event.target.checked
+     setData(tempData)
+   };
+ 
+   const handleTest = (event) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData[test].test = event.target.value
+     setData(tempData)
+   };
+ 
+   const handleQuestion = (event, qIndex) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData[test].questions[qIndex].question = event.target.value
+     setData(tempData)
+   };
+ 
+   const handleAnswer = (event, qIndex, aIndex) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData[test].questions[qIndex].answers[aIndex].answer = event.target.value
+     setData(tempData)
+   };
+ 
+   const addTest = () => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     var emptyTest = {
+       test: "test",
+       questions: []
+     }
+     tempData.push(emptyTest)
+     setData(tempData)
+   };
+ 
+   const addQuestion = () => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     var emptyQuestion = {
+       question: "question",
+       answers: []
+     }
+     tempData[test].questions.push(emptyQuestion)
+     setData(tempData)
+   };
+ 
+   const addAnswer = (qIndex) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     var emptyAnswer = {
+       answer: "answer",
+       checked: false,
+       correct: false
+     }
+     tempData[test].questions[qIndex].answers.push(emptyAnswer)
+     setData(tempData)
+   };
+ 
+   const removeTest = () => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData.splice(test, 1)
+     setData(tempData)
+     setTest("")
+   };
+ 
+   const removeQuestion = (qIndex) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData[test].questions.splice(qIndex, 1)
+     setData(tempData)
+   };
+ 
+   const removeAnswer = (qIndex, aIndex) => {
+     var tempData = JSON.parse(JSON.stringify(data))
+     tempData[test].questions[qIndex].answers.splice(aIndex, 1)
+     setData(tempData)
+   }; */
+
 
   const testButtons = () => {
     if (state.data !== []) {

@@ -12,9 +12,9 @@ const GreenCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
-function DrawTest(props) {
+function DrawTest({ testData, testIndex, answers, dispatch }) {
   const drawQuestion = (q, qIndex) => {
-    return (<Paper key={"question" + props.testIndex + qIndex}>
+    return (<Paper key={"question" + testIndex + qIndex}>
       <div>
         {q.question} <br />
         {q.answers.map((item, index) => {
@@ -26,43 +26,45 @@ function DrawTest(props) {
 
   const drawAnswer = (a, aIndex, qIndex) => {
     return (
-      <div key={"answer" + props.testIndex + qIndex + aIndex}>
+      <div key={"answer" + testIndex + qIndex + aIndex}>
         <FormControlLabel
           control={
             <Checkbox
-              color={props.answers ? "primary" : "secondary"}
+              color={answers ? "primary" : "secondary"}
               checked={a.checked}
-              onChange={props.answers ? null : (event) => props.handleCheckbox(event, qIndex, aIndex)}
+              onChange={answers ? null : (event) =>
+                dispatch({ type: "handleCheckbox", event: event, qIndex: qIndex, aIndex: aIndex })
+              }
             />
           }
-          label={props.answers ? null : a.answer}
+          label={answers ? null : a.answer}
         />
-        {props.answers ?
+        {answers ?
           <FormControlLabel
             control={
               <GreenCheckbox
                 checked={a.correct}
               />
             }
-            label={props.answers ? a.answer : null} /> :
+            label={answers ? a.answer : null} /> :
           null}
         <br />
       </div>
     )
   }
 
-  if (props.testIndex !== "") {
+  if (testIndex !== "") {
     //console.log(props.test.test)
     return (
       <>
-        {props.testData.questions.map((item, index) => {
+        {testData.questions.map((item, index) => {
           return (drawQuestion(item, index));
         })}
-        {props.answers ? null : <div>
-          <Button key={props.testData.test + "showAnswers"}
+        {answers ? null : <div>
+          <Button key={testData.test + "showAnswers"}
             variant="contained"
-            color="primary" onClick={() => { props.showAnswers() }}>
-            Näytä answers
+            color="primary" onClick={() => { dispatch({type:"setAnswers", answers:true}) }}>
+            Näytä vastaukset
           </Button>
         </div>}
       </>

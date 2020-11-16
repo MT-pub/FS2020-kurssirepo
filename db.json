@@ -15,7 +15,7 @@
             {
               "answer": "U = R / I",
               "checked": false,
-              "correct": true
+              "correct": false
             },
             {
               "answer": "U = R^2 * I",
@@ -25,7 +25,7 @@
             {
               "answer": "U = R / I^2",
               "checked": false,
-              "correct": true
+              "correct": false
             }
           ]
         },
@@ -61,7 +61,7 @@
       "test": "Matematiikka",
       "questions": [
         {
-          "question": "Kuinka paljon on 1 + 1?ffff",
+          "question": "Kuinka paljon on 1 + 1?",
           "answers": [
             {
               "answer": "4",
@@ -105,16 +105,6 @@
             },
             {
               "answer": "55555",
-              "checked": false,
-              "correct": false
-            },
-            {
-              "answer": "answer",
-              "checked": false,
-              "correct": false
-            },
-            {
-              "answer": "answer",
               "checked": false,
               "correct": false
             }
