@@ -1,8 +1,6 @@
-import { Paper, Checkbox, FormControlLabel, Button } from '@material-ui/core'
-import { green } from '@material-ui/core/colors'
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core'
 import React from 'react'
-import {DrawQuestion,MemoizedDrawQuestion} from './DrawQuestion'
+import {MemoizedDrawQuestion} from './DrawQuestion'
 
 function DrawTest({ testData, testIndex, answers, dispatch }) {
 

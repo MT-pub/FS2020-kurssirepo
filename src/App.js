@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect, useMemo } from 'react'
-import logo from './logo.svg'
 import './App.css'
 import { Button, AppBar, Toolbar } from '@material-ui/core'
 import DrawTest from './DrawTest'
@@ -77,7 +76,7 @@ function App() {
 
   const createRemData = async () => {
     try {
-      let result = await axios.post("http://localhost:3001/tests", initialData)
+      await axios.post("http://localhost:3001/tests", initialData)
       dispatch({ type: "INIT_DATA", data: initialData, fetchData: false })
     }
     catch (exception) {
@@ -93,7 +92,7 @@ function App() {
         //console.log("fetchIf")
         dispatch({ type: "INIT_DATA", data: result.data, fetchData: false })
       } else {
-        throw ("Ei dataa.. luodaan..")
+        throw new Error("Ei dataa.. luodaan..")
 
       }
     }
@@ -105,7 +104,7 @@ function App() {
 
   const saveRemData = async () => {
     try {
-      let result = await axios.put("http://localhost:3001/tests", state.data)
+      await axios.put("http://localhost:3001/tests", state.data)
     }
     catch (exception) {
       console.log("Datan päivitys ei onnistunut ", exception)

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
-import logo from './logo.svg'
+import React, { useEffect, useReducer } from 'react'
 import './App.css'
 import { Button, Icon, IconButton, AppBar, Toolbar } from '@material-ui/core'
 import EditTest from './EditTest'
@@ -45,7 +44,7 @@ const initialData = [{
 function reducer(state, action) {
   let deepCopy = JSON.parse(JSON.stringify(state));
 
-  console.log(deepCopy)
+  //console.log(deepCopy)
 
   switch (action.type) {
     case 'handleCheckbox':
@@ -64,6 +63,7 @@ function reducer(state, action) {
       deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
         .answers[action.aIndex].answer = action.event.target.value
+      return deepCopy
     case 'addTest':
       let emptyTest = {
         test: "test",
@@ -124,7 +124,7 @@ function Tests() {
 
   const createRemData = async () => {
     try {
-      let result = await axios.post("http://localhost:3001/tests", initialData)
+      await axios.post("http://localhost:3001/tests", initialData)
       dispatch({ type: "INIT_DATA", data: initialData, fetchData: false })
     }
     catch (exception) {
@@ -140,7 +140,7 @@ function Tests() {
         //console.log("fetchIf")
         dispatch({ type: "INIT_DATA", data: result.data, fetchData: false })
       } else {
-        throw ("Ei dataa.. luodaan..")
+        throw new Error("Ei dataa.. luodaan..")
 
       }
     }
@@ -152,7 +152,7 @@ function Tests() {
 
   const saveRemData = async () => {
     try {
-      let result = await axios.put("http://localhost:3001/tests", state.data)
+      await axios.put("http://localhost:3001/tests", state.data)
     }
     catch (exception) {
       console.log("Datan päivitys ei onnistunut ", exception)

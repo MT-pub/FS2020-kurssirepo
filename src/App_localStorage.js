@@ -1,4 +1,4 @@
-import React from 'react'
+/* import React from 'react'
 import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react'
@@ -95,7 +95,7 @@ function App() {
         <div>
           {testButtons()}
         </div>
-        {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
+        {// <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> }
         <div className="test">
           <DrawTest testData={data[test]} showAnswers={showAnswers}
             answers={answers} testIndex={test} handleCheckbox={handleCheckbox} />
@@ -106,3 +106,4 @@ function App() {
 }
 
 export default App;
+ */

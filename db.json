@@ -9,7 +9,7 @@
           "answers": [
             {
               "answer": "U = R * I",
-              "checked": false,
+              "checked": true,
               "correct": true
             },
             {
@@ -19,7 +19,7 @@
             },
             {
               "answer": "U = R^2 * I",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
@@ -34,7 +34,7 @@
           "answers": [
             {
               "answer": "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
@@ -44,7 +44,7 @@
             },
             {
               "answer": "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
@@ -70,12 +70,12 @@
             },
             {
               "answer": "3",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
               "answer": "2",
-              "checked": false,
+              "checked": true,
               "correct": true
             },
             {
@@ -90,12 +90,12 @@
           "answers": [
             {
               "answer": "1234554321",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
               "answer": "123454321",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
@@ -105,7 +105,7 @@
             },
             {
               "answer": "55555",
-              "checked": false,
+              "checked": true,
               "correct": false
             }
           ]

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+/* import React, { useState, useEffect, useReducer } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { Button, Icon, IconButton, AppBar, Toolbar } from '@material-ui/core'
@@ -102,9 +102,9 @@ function reducer(state, action) {
         .questions[action.qIndex]
         .answers.splice(action.aIndex, 1)
       return deepCopy
-    /* case 'setFetchData':
+     case 'setFetchData':
       deepCopy.fetchData = action.fetchData
-      return deepCopy */
+      return deepCopy 
     case 'setTest':
       deepCopy.activeTest = action.test
       //console.log(deepCopy.test)
@@ -170,7 +170,7 @@ function Tests() {
     }
   }, [state.data])
 
-  /*  const handleCheckbox = (event, qIndex, aIndex) => {
+    const handleCheckbox = (event, qIndex, aIndex) => {
      var tempData = JSON.parse(JSON.stringify(data))
      tempData[test].questions[qIndex].answers[aIndex].correct = event.target.checked
      setData(tempData)
@@ -242,7 +242,7 @@ function Tests() {
      var tempData = JSON.parse(JSON.stringify(data))
      tempData[test].questions[qIndex].answers.splice(aIndex, 1)
      setData(tempData)
-   }; */
+   }; 
 
 
   const testButtons = () => {
@@ -278,7 +278,7 @@ function Tests() {
         <div>
           {testButtons()}
         </div>
-        {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
+        {// <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> }
         <div className="test">
           <EditTest testData={state.data[state.activeTest]}
             testIndex={state.activeTest}
@@ -290,3 +290,4 @@ function Tests() {
 }
 
 export default Tests;
+ */

@@ -1,4 +1,4 @@
-import React from 'react'
+/* import React from 'react'
 import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react'
@@ -172,7 +172,7 @@ function Tests() {
         <div>
           {testButtons()}
         </div>
-        {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
+        {// <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> }
         <div className="test">
           <EditTest testData={data[test]}
             testIndex={test}
@@ -188,3 +188,4 @@ function Tests() {
 }
 
 export default Tests;
+ */

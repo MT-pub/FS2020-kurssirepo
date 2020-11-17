@@ -1,8 +1,8 @@
-import { Paper, Checkbox, FormControlLabel, Button } from '@material-ui/core'
+/* import { Paper, Checkbox, FormControlLabel, Button } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 import { withStyles } from '@material-ui/core/styles';
 import React from 'react'
-import DrawQuestion from './DrawQuestion'
+
 
 const GreenCheckbox = withStyles({
   root: {
@@ -76,4 +76,4 @@ function DrawTest({ testData, testIndex, answers, dispatch }) {
   }
 }
 
-export default DrawTest;
+export default DrawTest; */
