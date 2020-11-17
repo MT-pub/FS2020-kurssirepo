@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer, useEffect, useMemo } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { Button, AppBar, Toolbar } from '@material-ui/core'
@@ -123,7 +123,7 @@ function App() {
     }
   }, [state.data])
 
-  const testButtons = () => {
+  const testButtons = useMemo(() => {
     if (state.data !== []) {
       return (state.data.map((item, index) =>
         <Button key={"" + index + state.data[index].test}
@@ -136,7 +136,7 @@ function App() {
         </Button>
       ))
     }
-  }
+  },[state.data])
 
   //console.log(state.data)
   return (
@@ -150,7 +150,7 @@ function App() {
       </AppBar>
       <div className="page">
         <div>
-          {testButtons()}
+          {testButtons}
         </div>
         {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
         <div className="test">
