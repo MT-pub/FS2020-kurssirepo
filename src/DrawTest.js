@@ -9,7 +9,7 @@ function DrawTest({ testData, testIndex, answers, dispatch }) {
     return (
       <>
         {testData.questions.map((item, index) => {
-          return (<MemoizedDrawQuestion q={item} qIndex={index} testData={testData} testIndex={testIndex} answers={answers} dispatch={dispatch} />);
+          return (<MemoizedDrawQuestion key={"question" + testIndex + index} q={item} qIndex={index} testData={testData} testIndex={testIndex} answers={answers} dispatch={dispatch} />);
         })}
         {answers ? null : <div>
           <Button key={testData.test + " showAnswers"}

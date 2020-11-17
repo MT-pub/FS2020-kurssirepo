@@ -44,7 +44,7 @@ export function DrawQuestion({ testIndex, q, qIndex, answers, dispatch }) {
     )
   }
 
-  return (<Paper key={"question" + testIndex + qIndex}>
+  return (<Paper>
     <div>
       {q.question} <br />
       {q.answers.map((a, aIndex) => {
