@@ -46,7 +46,6 @@ function reducer(state, action) {
   let deepCopy = JSON.parse(JSON.stringify(state));
 
   //console.log(deepCopy)
-
   switch (action.type) {
     case 'handleCheckbox':
       deepCopy.data[deepCopy.activeTest]
