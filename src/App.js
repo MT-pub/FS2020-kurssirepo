@@ -3,6 +3,7 @@ import './App.css'
 import { Button, AppBar, Toolbar } from '@material-ui/core'
 import DrawTest from './DrawTest'
 import axios from 'axios'
+import SubjectChart from './Chart'
 
 const initialData = [{
   id: 0,
@@ -61,6 +62,9 @@ function reducer(state, action) {
     case 'setAnswers':
       deepCopy.answers = action.answers
       return deepCopy
+    case 'triggerShowChart':
+      deepCopy.showChart = !deepCopy.showChart
+      return deepCopy
     case 'INIT_DATA':
       deepCopy.fetchData = action.fetchData
       deepCopy.data = action.data
@@ -72,7 +76,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, answers: false });
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, answers: false, showChart: false });
 
   const createRemData = async () => {
     try {
@@ -134,30 +138,51 @@ function App() {
         </Button>
       ))
     }
-  },[state.data])
+  }, [state.data])
 
   //console.log(state.data)
-  return (
-    <div className="App">
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <Button>
-            Testinappi
+  if (!state.showChart) {
+    return (
+      <div className="App">
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Button onClick={() => {
+              dispatch({ type: "triggerShowChart" })
+            }}>
+              Kuvaajanappi
           </Button>
-        </Toolbar>
-      </AppBar>
-      <div className="page">
-        <div>
-          {testButtons}
+          </Toolbar>
+        </AppBar>
+        <div className="page">
+          <div>
+            {testButtons}
+          </div>
+          {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
+          <div className="test">
+            <DrawTest testData={state.data[state.activeTest]} dispatch={dispatch}
+              answers={state.answers} testIndex={state.activeTest} />
+          </div>
         </div>
-        {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
-        <div className="test">
-          <DrawTest testData={state.data[state.activeTest]} dispatch={dispatch}
-            answers={state.answers} testIndex={state.activeTest} />
+      </div >
+    );
+  } else if (state.showChart) {
+    return (
+      <div className="App">
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Button onClick={() => {
+              dispatch({ type: "triggerShowChart" })
+            }}>
+              Kuvaajanappi
+          </Button>
+          </Toolbar>
+        </AppBar>
+        <div className="page">
+          <SubjectChart />
         </div>
-      </div>
-    </div >
-  );
+      </div >
+    );
+  }
 }
 
 export default App;

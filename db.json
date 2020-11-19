@@ -9,7 +9,7 @@
           "answers": [
             {
               "answer": "U = R * I",
-              "checked": false,
+              "checked": true,
               "correct": true
             },
             {
@@ -19,12 +19,12 @@
             },
             {
               "answer": "U = R^2 * I",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
               "answer": "U = R / I^2",
-              "checked": false,
+              "checked": true,
               "correct": false
             }
           ]
@@ -44,12 +44,12 @@
             },
             {
               "answer": "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu",
-              "checked": false,
+              "checked": true,
               "correct": false
             },
             {
               "answer": "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu",
-              "checked": false,
+              "checked": true,
               "correct": true
             }
           ]
