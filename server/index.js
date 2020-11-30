@@ -8,8 +8,21 @@ const port = 4000
 // notice here I'm requiring my database adapter file
 // and not requiring node-postgres directly
 const db = require('./db')
-app.get('/:id', (req, res, next) => {
-  db.query('SELECT * FROM tentti WHERE id = $1', [req.params.id], (err, dbres) => {
+app.get('/tenttilista/:id', (req, res, next) => {
+  db.query(
+    'SELECT id,nimi,aloitusaika,lopetusaika FROM tentti where id IN (SELECT tentti_id FROM käyttäjätentti WHERE käyttäjä_id=$1',
+    [req.params.id], (err, dbres) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(dbres.rows[0])
+  })
+})
+
+app.get('/tenttilista/:id', (req, res, next) => {
+  db.query(
+    'SELECT id,nimi,aloitusaika,lopetusaika FROM tentti where id IN (SELECT tentti_id FROM käyttäjätentti WHERE käyttäjä_id=$1',
+    [req.params.id], (err, dbres) => {
     if (err) {
       return next(err)
     }
@@ -28,7 +41,7 @@ app.delete('/', (req, res) => {
   res.send('Hello World!DELETE')
 })
 app.put('/', (req, res) => {
-  res.send('Hello World!PUT')
+  res.send('INSERT INTO')
 })
 
 app.listen(port, () => {
