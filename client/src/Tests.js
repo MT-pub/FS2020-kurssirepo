@@ -118,7 +118,7 @@ function reducer(state, action) {
   }
 }
 
-function Tests() {
+function EditTests() {
 
   const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true });
 
@@ -215,4 +215,4 @@ function Tests() {
   );
 }
 
-export default Tests;
+export default EditTests;

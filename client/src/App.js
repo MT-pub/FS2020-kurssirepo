@@ -6,39 +6,39 @@ import axios from 'axios'
 import SubjectChart from './Chart'
 
 const initialData = [{
-  id: 0,
-  test: "Elektroniikka",
-  questions: [{
-    question: "Mikä seuraavista on Ohmin laki?",
-    answers: [{ answer: "U = R * I", checked: false, correct: true },
-    { answer: "U = R / I", checked: false, correct: false },
-    { answer: "U = R^2 * I", checked: false, correct: false },
-    { answer: "U = R / I^2", checked: false, correct: false }]
+  id: 1,
+  nimi: "Elektroniikka",
+  kysymykset: [{
+    kysymys: "Mikä seuraavista on Ohmin laki?",
+    vastaukset: [{ teksti: "U = R * I", checked: false, correct: true },
+    { teksti: "U = R / I", checked: false, correct: false },
+    { teksti: "U = R^2 * I", checked: false, correct: false },
+    { teksti: "U = R / I^2", checked: false, correct: false }]
   },
   {
-    question: "Mikä on Kirchhoffin virtalaki?",
-    answers: [{ answer: "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: false },
-    { answer: "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
-    { answer: "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
-    { answer: "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: true }]
+    kysymys: "Mikä on Kirchhoffin virtalaki?",
+    vastaukset: [{ teksti: "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: false },
+    { teksti: "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
+    { teksti: "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
+    { teksti: "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: true }]
   }]
 },
 {
-  id: 1,
-  test: "Matematiikka",
-  questions: [{
-    question: "Kuinka paljon on 1 + 1?",
-    answers: [{ answer: "4", checked: false, correct: false },
-    { answer: "3", checked: false, correct: false },
-    { answer: "2", checked: false, correct: true },
-    { answer: "1", checked: false, correct: false }]
+  id: 2,
+  nimi: "Matematiikka",
+  kysymykset: [{
+    teksti: "Kuinka paljon on 1 + 1?",
+    vastaukset: [{ teksti: "4", checked: false, correct: false },
+    { teksti: "3", checked: false, correct: false },
+    { teksti: "2", checked: false, correct: true },
+    { teksti: "1", checked: false, correct: false }]
   },
   {
-    question: "Kuinka paljon on 12345 + 54321?",
-    answers: [{ answer: "1234554321", checked: false, correct: false },
-    { answer: "123454321", checked: false, correct: false },
-    { answer: "66666", checked: false, correct: true },
-    { answer: "55555", checked: false, correct: false }]
+    teksti: "Kuinka paljon on 12345 + 54321?",
+    vastaukset: [{ teksti: "1234554321", checked: false, correct: false },
+    { teksti: "123454321", checked: false, correct: false },
+    { teksti: "66666", checked: false, correct: true },
+    { teksti: "55555", checked: false, correct: false }]
   }]
 }];
 
@@ -50,7 +50,7 @@ function reducer(state, action) {
     case 'handleCheckbox':
       deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
-        .answers[action.aIndex].checked = action.event.target.checked
+        .vastaukset[action.aIndex].checked = action.event.target.checked
       return deepCopy
     /* case 'setFetchData':
       deepCopy.fetchData = action.fetchData
@@ -59,8 +59,8 @@ function reducer(state, action) {
       deepCopy.activeTest = action.test
       //console.log(deepCopy.test)
       return deepCopy
-    case 'setAnswers':
-      deepCopy.answers = action.answers
+    case 'setvastaukset':
+      deepCopy.vastaukset = action.vastaukset
       return deepCopy
     case 'triggerShowChart':
       deepCopy.showChart = !deepCopy.showChart
@@ -76,7 +76,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, answers: false, showChart: false });
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, vastaukset: false, showChart: false });
 
   const createRemData = async () => {
     try {
@@ -90,7 +90,7 @@ function App() {
 
   const fetchRemData = async () => {
     try {
-      let result = await axios.get("http://localhost:3001/tests")
+      let result = await axios.get("http://localhost:3001/tenttilista/" + 1)
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
@@ -131,7 +131,7 @@ function App() {
         <Button key={"" + index + state.data[index].test}
           color="primary" onClick={() => {
             dispatch({ type: "setTest", test: index });
-            dispatch({ type: "setAnswers", answers: false });
+            dispatch({ type: "setvastaukset", vastaukset: false });
           }}
         >
           {item.test}
@@ -160,7 +160,7 @@ function App() {
           {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
           <div className="test">
             <DrawTest testData={state.data[state.activeTest]} dispatch={dispatch}
-              answers={state.answers} testIndex={state.activeTest} />
+              vastaukset={state.vastaukset} testIndex={state.activeTest} />
           </div>
         </div>
       </div >
