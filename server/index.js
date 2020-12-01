@@ -74,6 +74,42 @@ app.post('/vaihtoehto', (req, res, next) => {
   })
 })
 
+app.put('/tentti/:id', (req, res, next) => {
+  db.query(
+    "UPDATE tentti SET nimi=$2 WHERE id=$1",
+    [req.params.id,req.body.nimi],
+    (err, dbres) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(dbres.rows)
+  })
+})
+
+app.put('/kysymys/:id', (req, res, next) => {
+  db.query(
+    "UPDATE kysymys SET teksti=$2 WHERE id=$1",
+    [req.params.id,req.body.teksti],
+    (err, dbres) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(dbres.rows)
+  })
+})
+
+app.put('/vaihtoehto/:id', (req, res, next) => {
+  db.query(
+    "UPDATE vaihtoehto SET teksti=$2 WHERE id=$1",
+    [req.params.id,req.body.teksti],
+    (err, dbres) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(dbres.rows)
+  })
+})
+
 app.delete('/tentti/:id', (req, res, next) => {
   db.query(
     "UPDATE tentti SET poistettu=true WHERE id=$1",
@@ -109,6 +145,8 @@ app.delete('/vaihtoehto/:id', (req, res, next) => {
     res.send(dbres.count)
   })
 })
+
+
 // ... many other routes in this file
 
 /* app.get('/', (req, res) => {
