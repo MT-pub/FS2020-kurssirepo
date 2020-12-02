@@ -54,7 +54,8 @@ app.post('/tentti', (req, res, next) => {
 
 app.post('/kysymys', (req, res, next) => {
   db.query(
-    "INSERT INTO kysymys (teksti) VALUES ('Uusi kysymys')",
+    "INSERT INTO kysymys (teksti,tentti_id) VALUES ('Uusi kysymys',$1)",
+    [req.body.tentti_id],
     (err, dbres) => {
     if (err) {
       return next(err)
@@ -65,7 +66,8 @@ app.post('/kysymys', (req, res, next) => {
 
 app.post('/vaihtoehto', (req, res, next) => {
   db.query(
-    "INSERT INTO vaihtoehto (nimi) VALUES ('Uusi vastausvaihtoehto')",
+    "INSERT INTO vaihtoehto (nimi,kysymys_id) VALUES ('Uusi vastausvaihtoehto',$1)",
+    [req.body.kysymys_id],
     (err, dbres) => {
     if (err) {
       return next(err)
