@@ -1,25 +1,25 @@
-import React, { useReducer, useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import './App.css'
 import { Button, AppBar, Toolbar } from '@material-ui/core'
 import DrawTest from './DrawTest'
 import SubjectChart from './Chart'
 
-function DoTests() {
+function DoTests({state,dispatch}) {
 
   const testButtons = useMemo(() => {
     if (state.data !== []) {
       return (state.data.map((item, index) =>
-        <Button key={"" + index + state.data[index].test}
+        <Button key={"" + index + state.data[index].nimi}
           color="primary" onClick={() => {
             dispatch({ type: "setTest", test: index });
             dispatch({ type: "setvastaukset", vastaukset: false });
           }}
         >
-          {item.test}
+          {item.nimi}
         </Button>
       ))
     }
-  }, [state.data])
+  }, [state.data, dispatch])
 
   //console.log(state.data)
   if (!state.showChart) {

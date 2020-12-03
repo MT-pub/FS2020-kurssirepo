@@ -1,9 +1,10 @@
-import React, { useReducer, useEffect, useMemo } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import './App.css'
 import { Button, AppBar, Toolbar } from '@material-ui/core'
 import axios from 'axios'
 import DoTests from './DoTests'
 import EditTests from './EditTests'
+import SubjectChart from './Chart'
 import {
   BrowserRouter as Router,
   Switch,
@@ -96,7 +97,7 @@ function App() {
 
   const fetchRemData = async () => {
     try {
-      let result = await axios.get("http://localhost:3001/tenttilista/" + 1)
+      let result = await axios.get("http://localhost:4000/tenttilista/" + "1")
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
@@ -132,52 +133,39 @@ function App() {
   }, [state.data])
 
   //console.log(state.data)
-  if (!state.showChart) {
-    return (
-      <Router>
-        <div className="App">
-          <AppBar position="static" color="primary">
-            <Toolbar>
-              <Button onClick={() => {
-                dispatch({ type: "triggerShowChart" })
-              }}>
-                Kuvaajanappi
-            </Button>
-            </Toolbar>
-          </AppBar>
-          <Switch>
-            <div className="page">
-              <div>
-                {testButtons}
-              </div>
-              {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
-              <div className="test">
-                <DrawTest testData={state.data[state.activeTest]} dispatch={dispatch}
-                  vastaukset={state.vastaukset} testIndex={state.activeTest} />
-              </div>
-            </div>
-          </Switch>
-        </div >
-      </Router>
-    );
-  } else if (state.showChart) {
-    return (
+
+  return (
+    <Router>
       <div className="App">
         <AppBar position="static" color="primary">
           <Toolbar>
-            <Button onClick={() => {
-              dispatch({ type: "triggerShowChart" })
-            }}>
-              Kuvaajanappi
-          </Button>
+            <Button component={Link} to="/">
+              Tentit
+            </Button>
+            <Button component={Link} to="/kuvaajat">
+              Kuvaajat
+            </Button>
+            <Button component={Link} to="/hallinta">
+              Hallinta
+            </Button>
           </Toolbar>
         </AppBar>
-        <div className="page">
-          <SubjectChart />
-        </div>
+        <Switch>
+          <div className="page">
+            <Route path="/kuvaajat">
+              <SubjectChart />
+            </Route>
+            <Route path="/hallinta">
+              <EditTests state={state} dispatch={dispatch} />
+            </Route>
+            <Route exact path="/">
+              <DoTests state={state} dispatch={dispatch} />
+            </Route>
+          </div>
+        </Switch>
       </div >
-    );
-  }
+    </Router>
+  );
 }
 
 export default App;

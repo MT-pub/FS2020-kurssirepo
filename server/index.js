@@ -3,6 +3,7 @@ const cors = require('cors')
 
 const app = express()
 app.use(cors())
+app.use(express.json())
 const port = 4000
 
 // notice here I'm requiring my database adapter file
@@ -120,7 +121,7 @@ app.delete('/tentti/:id', (req, res, next) => {
     if (err) {
       return next(err)
     }
-    res.send(dbres.count)
+    res.send(dbres.rowCount)
   })
 })
 
