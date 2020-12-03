@@ -108,16 +108,22 @@ function reducer(state, action) {
         .questions[action.qIndex]
         .answers.splice(action.aIndex, 1)
       return deepCopy
-     case 'setFetchData':
+    case 'setFetchData':
       deepCopy.fetchData = action.fetchData
-      return deepCopy 
+      return deepCopy
     case 'setTest':
       deepCopy.activeTest = action.test
+      /* if(deepCopy.data[deepCopy.activeTest].kysymykset === []){
+        fetchTest(state.data[state.activeTest].id)
+      } */
       //console.log(deepCopy.test)
       return deepCopy
-    case 'INIT_DATA':
+    case 'INIT_LIST':
       deepCopy.fetchData = action.fetchData
       deepCopy.data = action.data
+      return deepCopy
+    case 'INIT_TEST':
+      deepCopy.data[deepCopy.activeTest].kysymykset = action.data
       return deepCopy
     default:
       throw new Error('No action specified')
@@ -131,7 +137,7 @@ function App() {
   const createRemData = async () => {
     try {
       await axios.post("http://localhost:3001/tests", initialData)
-      dispatch({ type: "INIT_DATA", data: initialData, fetchData: false })
+      dispatch({ type: "INIT_LIST", data: initialData, fetchData: false })
     }
     catch (exception) {
       alert("Tietokannan alustaminen epäonnistui")
@@ -144,7 +150,7 @@ function App() {
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
-        dispatch({ type: "INIT_DATA", data: result.data, fetchData: false })
+        dispatch({ type: "INIT_LIST", data: result.data, fetchData: false })
       } else {
         throw new Error("Ei dataa.. luodaan..")
 
@@ -153,6 +159,22 @@ function App() {
     catch (exception) {
       console.log(exception)
       createRemData()
+    }
+  };
+
+  const fetchTest = async (testId) => {
+    try {
+      let result = await axios.get("http://localhost:4000/tentti/" + testId)
+      //console.log(result)
+      if (result.data.length > 0) {
+        //console.log("fetchIf")
+        dispatch({ type: "INIT_TEST", data: result.data })
+      } else {
+        throw new Error("Tentin hakemisessa tapahtui virhe")
+      }
+    }
+    catch (exception) {
+      console.log(exception)
     }
   };
 
@@ -170,10 +192,10 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (!state.fetchData) {
-      saveRemData()
+    if (state.data.length && state.data[state.activeTest].kysymykset === []) {
+      fetchTest(state.data[state.activeTest].id)
     }
-  }, [state.data])
+  }, [state.activeTest])
 
   //console.log(state.data)
 

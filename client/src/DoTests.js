@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react'
 import './App.css'
-import { Button, AppBar, Toolbar } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import DrawTest from './DrawTest'
-import SubjectChart from './Chart'
 
 function DoTests({state,dispatch}) {
 
@@ -12,7 +11,7 @@ function DoTests({state,dispatch}) {
         <Button key={"" + index + state.data[index].nimi}
           color="primary" onClick={() => {
             dispatch({ type: "setTest", test: index });
-            dispatch({ type: "setvastaukset", vastaukset: false });
+            //dispatch({ type: "setvastaukset", vastaukset: false });
           }}
         >
           {item.nimi}
