@@ -22,18 +22,7 @@ function DoTests({state,dispatch}) {
   }, [state.data, dispatch])
 
   //console.log(state.data)
-  if (!state.showChart) {
     return (
-      <div className="App">
-        <AppBar position="static" color="primary">
-          <Toolbar>
-            <Button onClick={() => {
-              dispatch({ type: "triggerShowChart" })
-            }}>
-              Kuvaajanappi
-          </Button>
-          </Toolbar>
-        </AppBar>
         <div className="page">
           <div>
             {testButtons}
@@ -44,26 +33,7 @@ function DoTests({state,dispatch}) {
               vastaukset={state.vastaukset} testIndex={state.activeTest} />
           </div>
         </div>
-      </div >
     );
-  } else if (state.showChart) {
-    return (
-      <div className="App">
-        <AppBar position="static" color="primary">
-          <Toolbar>
-            <Button onClick={() => {
-              dispatch({ type: "triggerShowChart" })
-            }}>
-              Kuvaajanappi
-          </Button>
-          </Toolbar>
-        </AppBar>
-        <div className="page">
-          <SubjectChart />
-        </div>
-      </div >
-    );
-  }
 }
 
 export default DoTests;

@@ -57,20 +57,63 @@ function reducer(state, action) {
     case 'handleCheckbox':
       deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
-        .vastaukset[action.aIndex].checked = action.event.target.checked
+        .answers[action.aIndex].correct = action.event.target.checked
       return deepCopy
-    /* case 'setFetchData':
+    case 'handleTest':
+      deepCopy.data[deepCopy.activeTest].test = action.event.target.value
+      return deepCopy
+    case 'handleQuestion':
+      deepCopy.data[deepCopy.activeTest]
+        .questions[action.qIndex].question = action.event.target.value
+      return deepCopy
+    case 'handleAnswer':
+      deepCopy.data[deepCopy.activeTest]
+        .questions[action.qIndex]
+        .answers[action.aIndex].answer = action.event.target.value
+    case 'addTest':
+      let emptyTest = {
+        test: "test",
+        questions: []
+      }
+      deepCopy.data.push(emptyTest)
+      return deepCopy
+    case 'addQuestion':
+      let emptyQuestion = {
+        question: "question",
+        answers: []
+      }
+      deepCopy.data[deepCopy.activeTest]
+        .questions.push(emptyQuestion)
+      return deepCopy
+    case 'addAnswer':
+      let emptyAnswer = {
+        answer: "answer",
+        checked: false,
+        correct: false
+      }
+      deepCopy.data[deepCopy.activeTest]
+        .questions[action.qIndex]
+        .answers.push(emptyAnswer)
+      return deepCopy
+    case 'removeTest':
+      deepCopy.data.splice(deepCopy.activeTest, 1)
+      deepCopy.activeTest = ""
+      return deepCopy
+    case 'removeQuestion':
+      deepCopy.data[deepCopy.activeTest]
+        .questions.splice(action.qIndex, 1)
+      return deepCopy
+    case 'removeAnswer':
+      deepCopy.data[deepCopy.activeTest]
+        .questions[action.qIndex]
+        .answers.splice(action.aIndex, 1)
+      return deepCopy
+     case 'setFetchData':
       deepCopy.fetchData = action.fetchData
-      return deepCopy */
+      return deepCopy 
     case 'setTest':
       deepCopy.activeTest = action.test
       //console.log(deepCopy.test)
-      return deepCopy
-    case 'setvastaukset':
-      deepCopy.vastaukset = action.vastaukset
-      return deepCopy
-    case 'triggerShowChart':
-      deepCopy.showChart = !deepCopy.showChart
       return deepCopy
     case 'INIT_DATA':
       deepCopy.fetchData = action.fetchData

@@ -4,7 +4,7 @@ import { Button, Icon, IconButton, AppBar, Toolbar } from '@material-ui/core'
 import EditTest from './EditTest'
 
 
-function EditTests({state,dispatch}) {
+function EditTests({ state, dispatch }) {
 
   const testButtons = () => {
     if (state.data !== []) {
@@ -27,26 +27,17 @@ function EditTests({state,dispatch}) {
   };
 
   return (
-    <div className="App">
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <Button>
-            Testinappi
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <div className="page">
-        <div>
-          {testButtons()}
-        </div>
-        {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
-        <div className="test">
-          <EditTest testData={state.data[state.activeTest]}
-            testIndex={state.activeTest}
-            dispatch={dispatch} />
-        </div>
+    <>
+      <div>
+        {testButtons()}
       </div>
-    </div >
+      {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
+      <div className="test">
+        <EditTest testData={state.data[state.activeTest]}
+          testIndex={state.activeTest}
+          dispatch={dispatch} />
+      </div>
+    </>
   );
 }
 
