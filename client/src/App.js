@@ -14,38 +14,38 @@ import {
 
 const initialData = [{
   id: 1,
-  nimi: "Elektroniikka",
-  kysymykset: [{
-    kysymys: "Mikä seuraavista on Ohmin laki?",
-    vastaukset: [{ teksti: "U = R * I", checked: false, correct: true },
-    { teksti: "U = R / I", checked: false, correct: false },
-    { teksti: "U = R^2 * I", checked: false, correct: false },
-    { teksti: "U = R / I^2", checked: false, correct: false }]
+  name: "Elektroniikka",
+  questions: [{
+    text: "Mikä seuraavista on Ohmin laki?",
+    answers: [{ text: "U = R * I", checked: false, correct: true },
+    { text: "U = R / I", checked: false, correct: false },
+    { text: "U = R^2 * I", checked: false, correct: false },
+    { text: "U = R / I^2", checked: false, correct: false }]
   },
   {
-    kysymys: "Mikä on Kirchhoffin virtalaki?",
-    vastaukset: [{ teksti: "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: false },
-    { teksti: "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
-    { teksti: "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
-    { teksti: "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: true }]
+    text: "Mikä on Kirchhoffin virtalaki?",
+    answers: [{ text: "Sähkövirtaa tulee pisteeseen yhtä monta reittiä, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: false },
+    { text: "Sähkövirta tulee pisteeseen samansuuntaisena, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
+    { text: "Sähkövirta tulee pisteeseen vastakkaiselta suunnalta, kuin se kyseisestä pisteestä poistuu", checked: false, correct: false },
+    { text: "Sähkövirtaa tulee pisteeseen yhtä paljon, kuin sitä kyseisestä pisteestä poistuu", checked: false, correct: true }]
   }]
 },
 {
   id: 2,
-  nimi: "Matematiikka",
-  kysymykset: [{
-    teksti: "Kuinka paljon on 1 + 1?",
-    vastaukset: [{ teksti: "4", checked: false, correct: false },
-    { teksti: "3", checked: false, correct: false },
-    { teksti: "2", checked: false, correct: true },
-    { teksti: "1", checked: false, correct: false }]
+  name: "Matematiikka",
+  questions: [{
+    text: "Kuinka paljon on 1 + 1?",
+    answers: [{ text: "4", checked: false, correct: false },
+    { text: "3", checked: false, correct: false },
+    { text: "2", checked: false, correct: true },
+    { text: "1", checked: false, correct: false }]
   },
   {
-    teksti: "Kuinka paljon on 12345 + 54321?",
-    vastaukset: [{ teksti: "1234554321", checked: false, correct: false },
-    { teksti: "123454321", checked: false, correct: false },
-    { teksti: "66666", checked: false, correct: true },
-    { teksti: "55555", checked: false, correct: false }]
+    text: "Kuinka paljon on 12345 + 54321?",
+    answers: [{ text: "1234554321", checked: false, correct: false },
+    { text: "123454321", checked: false, correct: false },
+    { text: "66666", checked: false, correct: true },
+    { text: "55555", checked: false, correct: false }]
   }]
 }];
 
@@ -64,12 +64,13 @@ function reducer(state, action) {
       return deepCopy
     case 'handleQuestion':
       deepCopy.data[deepCopy.activeTest]
-        .questions[action.qIndex].question = action.event.target.value
+        .questions[action.qIndex].text = action.event.target.value
       return deepCopy
     case 'handleAnswer':
       deepCopy.data[deepCopy.activeTest]
         .questions[action.qIndex]
         .answers[action.aIndex].answer = action.event.target.value
+      return deepCopy
     case 'addTest':
       let emptyTest = {
         test: "test",
@@ -79,7 +80,7 @@ function reducer(state, action) {
       return deepCopy
     case 'addQuestion':
       let emptyQuestion = {
-        question: "question",
+        text: "text",
         answers: []
       }
       deepCopy.data[deepCopy.activeTest]
@@ -113,7 +114,7 @@ function reducer(state, action) {
       return deepCopy
     case 'setTest':
       deepCopy.activeTest = action.test
-      /* if(deepCopy.data[deepCopy.activeTest].kysymykset === []){
+      /* if(deepCopy.data[deepCopy.activeTest].questions === []){
         fetchTest(state.data[state.activeTest].id)
       } */
       //console.log(deepCopy.test)
@@ -123,7 +124,7 @@ function reducer(state, action) {
       deepCopy.data = action.data
       return deepCopy
     case 'INIT_TEST':
-      deepCopy.data[deepCopy.activeTest].kysymykset = action.data
+      deepCopy.data[deepCopy.activeTest].questions = action.data
       return deepCopy
     default:
       throw new Error('No action specified')
@@ -132,7 +133,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, vastaukset: false, showChart: false });
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, answers: false, showChart: false });
 
   const createRemData = async () => {
     try {
@@ -192,7 +193,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (state.data.length && state.data[state.activeTest].kysymykset === []) {
+    if (state.data.length && !state.data[state.activeTest].questions.length) {
+      console.log("haetaan kysymyksiä")
       fetchTest(state.data[state.activeTest].id)
     }
   }, [state.activeTest])
@@ -215,8 +217,8 @@ function App() {
             </Button>
           </Toolbar>
         </AppBar>
-        <Switch>
-          <div className="page">
+        <div className="page">
+          <Switch>
             <Route path="/kuvaajat">
               <SubjectChart />
             </Route>
@@ -226,8 +228,8 @@ function App() {
             <Route exact path="/">
               <DoTests state={state} dispatch={dispatch} />
             </Route>
-          </div>
-        </Switch>
+          </Switch>
+        </div>
       </div >
     </Router>
   );

@@ -4,15 +4,17 @@ import {MemoizedDrawQuestion} from './DrawQuestion'
 
 function DrawTest({ testData, testIndex, answers, dispatch }) {
 
-  if (testIndex !== "") {
+console.log(testData)
+
+  if (testIndex !== "" && testData.questions) {
     //console.log(props.test.test)
     return (
       <>
         {testData.questions.map((item, index) => {
-          return (<MemoizedDrawQuestion key={"question" + testIndex + index} q={item} qIndex={index} testData={testData} testIndex={testIndex} answers={answers} dispatch={dispatch} />);
+          return (<MemoizedDrawQuestion key={"question" + testData.id + item.id} q={item} qIndex={index} testData={testData} testIndex={testIndex} answers={answers} dispatch={dispatch} />);
         })}
         {answers ? null : <div>
-          <Button key={testData.test + " showAnswers"}
+          <Button key={testData.name + " showAnswers"}
             variant="contained"
             color="primary" onClick={() => { dispatch({type:"setAnswers", answers:true}) }}>
             Näytä vastaukset

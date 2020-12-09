@@ -8,13 +8,13 @@ function DoTests({ state, dispatch }) {
   const testButtons = useMemo(() => {
     if (state.data !== []) {
       return (state.data.map((item, index) =>
-        <Button key={"" + index + state.data[index].nimi}
+        <Button key={"" + state.data[index].id + state.data[index].name}
           color="primary" onClick={() => {
             dispatch({ type: "setTest", test: index });
-            //dispatch({ type: "setvastaukset", vastaukset: false });
+            //dispatch({ type: "setvastaukset", answers: false });
           }}
         >
-          {item.nimi}
+          {item.name}
         </Button>
       ))
     }
@@ -30,7 +30,7 @@ function DoTests({ state, dispatch }) {
         {/* <img src='./selma_pieni2.8d5eb9aa.png' className='App-logo'></img> */}
         <div className="test">
           <DrawTest testData={state.data[state.activeTest]} dispatch={dispatch}
-            vastaukset={state.vastaukset} testIndex={state.activeTest} />
+            answers={state.answers} testIndex={state.activeTest} />
         </div>
       </div>
     );

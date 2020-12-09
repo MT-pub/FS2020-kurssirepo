@@ -16,7 +16,7 @@ const port = 4000
 const db = require('./db')
 app.get('/tenttilista/:id', (req, res, next) => {
   db.query(
-    'SELECT id,nimi,aloitusaika,lopetusaika FROM tentti where id IN (SELECT tentti_id FROM käyttäjätentti WHERE käyttäjä_id=$1)',
+    'SELECT id,nimi AS name,aloitusaika AS starttime,lopetusaika AS stoptime FROM tentti where id IN (SELECT tentti_id FROM käyttäjätentti WHERE käyttäjä_id=$1)',
     [req.params.id], (err, dbres) => {
     if (err) {
       return next(err)
@@ -26,10 +26,10 @@ app.get('/tenttilista/:id', (req, res, next) => {
     if(Array.isArray(tentit)){
       let len = tentit.length
       for(let i=0;i<len;i++){
-        tentit[i].kysymykset = []
+        tentit[i].questions = []
       }
     } else if(tentit) {
-      tentit.kysymykset = []
+      tentit.questions = []
     }
 
     res.send(tentit)
@@ -37,51 +37,51 @@ app.get('/tenttilista/:id', (req, res, next) => {
 })
 
 app.get('/tentti/:id', (req, res, next) => {
-  let kysymykset = []
+  let questions = []
   db.query(
-    'SELECT id,teksti,tentti_id,aihe_id FROM kysymys where tentti_id=$1',
+    'SELECT id,teksti AS text,tentti_id AS test_id,aihe_id AS subject_id FROM kysymys where tentti_id=$1',
     [req.params.id], (err, dbres) => {
     if (err) {
       return next(err)
     }
     
-    kysymykset = dbres.rows
+    questions = dbres.rows
   })
 
   db.query(
-    'SELECT id,teksti,kysymys_id FROM vaihtoehto where poistettu=false AND kysymys_id IN (SELECT id FROM kysymys where tentti_id=$1)',
+    'SELECT id,teksti AS text,kysymys_id AS question_id FROM vaihtoehto where poistettu=false AND kysymys_id IN (SELECT id FROM kysymys where tentti_id=$1)',
     [req.params.id], (err, dbres) => {
     if (err) {
       return next(err)
     }
     
-    if(Array.isArray(kysymykset)){
-      let k_length = kysymykset.length
+    if(Array.isArray(questions)){
+      let k_length = questions.length
       let v_length = dbres.rows.length
       
       for(let k=0;k<k_length;k++){
-        kysymykset[k].vastaukset = []
+        questions[k].answers = []
         for(let v=0;v<v_length;v++){
-          if(kysymykset[k].id === dbres.rows[v].kysymys_id){
-            kysymykset[k].vastaukset.push(dbres.rows[v])
+          if(questions[k].id === dbres.rows[v].kysymys_id){
+            questions[k].answers.push(dbres.rows[v])
           }
         }
       }
-    } else if (kysymykset) {
-      kysymykset = [kysymykset]
-      kysymykset[0].vastaukset = []
+    } else if (questions) {
+      questions = [questions]
+      questions[0].answers = []
       let v_length = dbres.rows.length
       
       for(let v=0;v<v_length;v++){
-        kysymykset[0].vastaukset.push(dbres.rows[v])
+        questions[0].answers.push(dbres.rows[v])
       }
     }
 
-    res.send(kysymykset)
+    res.send(questions)
   })
 })
 
-app.get('/kysymykset/:id', (req, res, next) => {
+app.get('/questions/:id', (req, res, next) => {
   db.query(
     'SELECT id,teksti,tentti_id,aihe_id FROM kysymys where tentti_id=$1',
     [req.params.id], (err, dbres) => {
