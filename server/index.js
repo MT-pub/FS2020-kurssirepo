@@ -1,8 +1,13 @@
 const express = require('express')
 const cors = require('cors')
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 const app = express()
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 const port = 4000
 
@@ -53,6 +58,7 @@ app.get('/tentti/:id', (req, res, next) => {
     if(Array.isArray(kysymykset)){
       let k_length = kysymykset.length
       let v_length = dbres.rows.length
+      
       for(let k=0;k<k_length;k++){
         kysymykset[k].vastaukset = []
         for(let v=0;v<v_length;v++){
@@ -65,6 +71,7 @@ app.get('/tentti/:id', (req, res, next) => {
       kysymykset = [kysymykset]
       kysymykset[0].vastaukset = []
       let v_length = dbres.rows.length
+      
       for(let v=0;v<v_length;v++){
         kysymykset[0].vastaukset.push(dbres.rows[v])
       }
