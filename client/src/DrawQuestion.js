@@ -24,7 +24,7 @@ export function DrawQuestion({ testIndex, q, qIndex, answers, dispatch }) {
               color={answers ? "primary" : "secondary"}
               checked={a.checked}
               onChange={answers ? null : (event) =>
-                dispatch({ type: "handleCheckbox", event: event, qIndex: qIndex, aIndex: aIndex })
+                dispatch({ type: "changeAnswer", event: event, qIndex: qIndex, aIndex: aIndex })
               }
             />
           }

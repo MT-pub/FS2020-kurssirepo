@@ -96,6 +96,11 @@ function reducer(state, action) {
         .questions[action.qIndex]
         .answers.push(emptyAnswer)
       return deepCopy
+    case 'changeAnswer':
+      deepCopy.data[state.activeTest]
+      .questions[action.qIndex]
+      .answers[action.aIndex].checked = action.event.target.checked
+      return deepCopy
     case 'removeTest':
       deepCopy.data.splice(deepCopy.activeTest, 1)
       deepCopy.activeTest = ""

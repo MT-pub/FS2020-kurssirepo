@@ -64,6 +64,7 @@ app.get('/tentti/:id', (req, res, next) => {
         for(let v=0;v<v_length;v++){
           if(questions[k].id === dbres.rows[v].question_id){
             questions[k].answers.push(dbres.rows[v])
+            questions[k].answers[questions[k].answers.length - 1].checked = false
           }
         }
       }
@@ -81,9 +82,9 @@ app.get('/tentti/:id', (req, res, next) => {
   })
 })
 
-app.get('/questions/:id', (req, res, next) => {
+app.get('/kysymykset/:id', (req, res, next) => {
   db.query(
-    'SELECT id,teksti,tentti_id,aihe_id FROM kysymys where tentti_id=$1',
+    'SELECT id,teksti AS text,tentti_id AS test_id,aihe_id AS subject_id FROM kysymys where tentti_id=$1',
     [req.params.id], (err, dbres) => {
     if (err) {
       return next(err)
@@ -94,7 +95,7 @@ app.get('/questions/:id', (req, res, next) => {
 
 app.get('/vaihtoehdot/:id', (req, res, next) => {
   db.query(
-    'SELECT id,teksti,kysymys_id FROM vaihtoehto where kysymys_id=$1',
+    'SELECT id,teksti AS text,kysymys_id AS question_id FROM vaihtoehto where kysymys_id=$1',
     [req.params.id], (err, dbres) => {
     if (err) {
       return next(err)
