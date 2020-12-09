@@ -9,6 +9,11 @@ var corsOptions = {
 const app = express()
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use('/paljokelloon',function (req, res, next) {
+  console.log('Kellon on:', Date.now())
+  next()
+})
+
 const port = 4000
 
 // notice here I'm requiring my database adapter file

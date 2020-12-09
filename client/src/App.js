@@ -98,8 +98,8 @@ function reducer(state, action) {
       return deepCopy
     case 'changeAnswer':
       deepCopy.data[state.activeTest]
-      .questions[action.qIndex]
-      .answers[action.aIndex].checked = action.event.target.checked
+        .questions[action.qIndex]
+        .answers[action.aIndex].checked = action.event.target.checked
       return deepCopy
     case 'removeTest':
       deepCopy.data.splice(deepCopy.activeTest, 1)
@@ -115,6 +115,9 @@ function reducer(state, action) {
         .answers.splice(action.aIndex, 1)
       return deepCopy
     case 'setFetchData':
+      deepCopy.fetchData = action.fetchData
+      return deepCopy
+    case 'setSaveData':
       deepCopy.fetchData = action.fetchData
       return deepCopy
     case 'setTest':
@@ -138,7 +141,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, answers: false, showChart: false });
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false });
 
   const createRemData = async () => {
     try {
@@ -184,7 +187,7 @@ function App() {
     }
   };
 
-  const saveRemData = async () => {
+  const saveTest = async () => {
     try {
       await axios.put("http://localhost:3001/tests", state.data)
     }
@@ -196,6 +199,10 @@ function App() {
   useEffect(() => {
     fetchRemData()
   }, [])
+
+  useEffect(() => {
+    saveTest()
+  }, [state.saveData])
 
   useEffect(() => {
     if (state.data.length && !state.data[state.activeTest].questions.length) {
