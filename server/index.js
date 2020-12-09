@@ -62,7 +62,7 @@ app.get('/tentti/:id', (req, res, next) => {
       for(let k=0;k<k_length;k++){
         questions[k].answers = []
         for(let v=0;v<v_length;v++){
-          if(questions[k].id === dbres.rows[v].kysymys_id){
+          if(questions[k].id === dbres.rows[v].question_id){
             questions[k].answers.push(dbres.rows[v])
           }
         }

@@ -28,7 +28,7 @@ export function DrawQuestion({ testIndex, q, qIndex, answers, dispatch }) {
               }
             />
           }
-          label={answers ? null : a.answer}
+          label={answers ? null : a.text}
         />
         {answers ?
           <FormControlLabel
@@ -37,7 +37,7 @@ export function DrawQuestion({ testIndex, q, qIndex, answers, dispatch }) {
                 checked={a.correct}
               />
             }
-            label={answers ? a.answer : null} /> :
+            label={answers ? a.text : null} /> :
           null}
         <br />
       </div>
@@ -46,7 +46,7 @@ export function DrawQuestion({ testIndex, q, qIndex, answers, dispatch }) {
 
   return (<Paper>
     <div>
-      {q.question} <br />
+      {q.text} <br />
       {q.answers.map((a, aIndex) => {
         return (drawAnswer(a, aIndex, qIndex))
       })}
