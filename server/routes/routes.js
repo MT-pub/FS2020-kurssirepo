@@ -8,7 +8,7 @@ router.post('/signup',
   passport.authenticate('signup', { session: false }),
   async (req, res, next) => {
     res.json({
-      message: 'Kirjautuminen onnistui',
+      message: 'Rekisteröityminen onnistui',
       user: req.user.email
     })
   }

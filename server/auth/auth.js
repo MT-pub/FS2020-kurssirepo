@@ -62,20 +62,21 @@ passport.use(
           }
 
           if (!result.rows.length === 1) {
-            return done(null, false, { message: 'User not found' });
+            return done(null, false, { message: 'Väärä käyttäjä tai salasana' });
           }
 
-          const validate = await bcrypt.compare(result.rows[0].salasana_hash, password)
+          const validate = await bcrypt.compare(password, result.rows[0].salasana_hash)
 
           if (!validate) {
-            return done(null, false, { message: 'Wrong Password' });
+            return done(null, false, { message: 'Väärä käyttäjä tai salasana' });
           }
 
           let user = {
+            id: result.rows[0].käyttäjäid,
             email: email,
             password: password
           }
-          return done(null, user, { message: 'Logged in Successfully' });
+          return done(null, user, { message: 'Kirjauduttu sisään' });
         }
       )
     }
