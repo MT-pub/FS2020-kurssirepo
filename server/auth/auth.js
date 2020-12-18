@@ -2,8 +2,8 @@ const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
 const db = require('../db')
 const bcrypt = require('bcrypt')
-JWTstrategy = require('passport-jwt').Strategy
-ExtractJWT = require('passport-jwt').ExtractJwt
+const JWTstrategy = require('passport-jwt').Strategy
+const ExtractJWT = require('passport-jwt').ExtractJwt
 const SALT_ROUNDS = 12
 
 passport.use('signup',
@@ -74,6 +74,7 @@ passport.use(
           let user = {
             id: result.rows[0].käyttäjäid,
             email: email,
+            role: result.rows[0].rooli,
             password: password
           }
           return done(null, user, { message: 'Kirjauduttu sisään' });
@@ -83,4 +84,18 @@ passport.use(
   )
 )
 
-
+passport.use(
+  new JWTstrategy(
+    {
+      secretOrKey: 'TOP_SECRET',
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
+    },
+    async (token, done) => {
+      try {
+        return done(null, token.user);
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+)

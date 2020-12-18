@@ -14,10 +14,6 @@ router.post('/signup',
   }
 )
 
-
-
-
-
 router.post(
   '/login',
   async (req, res, next) => {
