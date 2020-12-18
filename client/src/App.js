@@ -141,7 +141,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false });
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false,   });
 
   const createRemData = async () => {
     try {
@@ -189,7 +189,7 @@ function App() {
 
   const saveTest = async () => {
     try {
-      await axios.put("http://localhost:3001/tests", state.data)
+      await axios.put("http://localhost:4000/tentit", state.data[state.activeTest])
     }
     catch (exception) {
       console.log("Datan päivitys ei onnistunut ", exception)
@@ -197,16 +197,18 @@ function App() {
   };
 
   useEffect(() => {
+    //console.log("Haetaan tenttilistaa")
     fetchRemData()
   }, [])
 
   useEffect(() => {
+    console.log("Tallennetaan")
     saveTest()
   }, [state.saveData])
 
   useEffect(() => {
     if (state.data.length && !state.data[state.activeTest].questions.length) {
-      console.log("haetaan kysymyksiä")
+      console.log("Haetaan dataa")
       fetchTest(state.data[state.activeTest].id)
     }
   }, [state.activeTest])
