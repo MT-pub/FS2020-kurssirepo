@@ -1,6 +1,6 @@
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
-const db = require('./db')
+const db = require('../db')
 const bcrypt = require('bcrypt')
 JWTstrategy = require('passport-jwt').Strategy
 ExtractJWT = require('passport-jwt').ExtractJwt
@@ -15,7 +15,7 @@ passport.use('signup',
     },
     async (req, email, password, done) => {
       db.query('select * FROM käyttäjä where sähköposti=$1', [email],
-        (err, result) => {
+        async (err, result) => {
           if (err) {
             done(err)
           }
@@ -31,7 +31,7 @@ passport.use('signup',
             email: email,
             password: password
           }
-          await db.query(
+          db.query(
             "INSERT INTO käyttäjä (etunimi, sukunimi, sähköposti, salasana_hash) VALUES ($1,$2,$3,$4)",
             [req.body.firstName, req.body.lastName, email, passwordHash],
             (dberr, dbres) => {
@@ -56,7 +56,7 @@ passport.use(
     },
     async (email, password, done) => {
       db.query('select * FROM käyttäjä where sähköposti=$1', [email],
-        (err, result) => {
+        async (err, result) => {
           if (err) {
             done(err)
           }

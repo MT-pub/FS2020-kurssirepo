@@ -9,7 +9,7 @@ router.post('/signup',
   async (req, res, next) => {
     res.json({
       message: 'Kirjautuminen onnistui',
-      user: req.user
+      user: req.user.email
     })
   }
 )
