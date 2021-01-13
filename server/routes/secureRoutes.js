@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/tenttilista/:id', (req, res, next) => {
   db.query(
-    'SELECT id,nimi AS name,aloitusaika AS starttime,lopetusaika AS stoptime FROM tentti WHERE id IN (SELECT tenttiid FROM käyttäjätentti WHERE käyttäjäid=$1)',
+    'SELECT tenttiid,nimi AS name,aloitusaika AS starttime,lopetusaika AS stoptime FROM tentti WHERE tenttiid IN (SELECT tenttiid FROM käyttäjätentti WHERE käyttäjäid=$1)',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
@@ -29,7 +29,7 @@ router.get('/tenttilista/:id', (req, res, next) => {
 router.get('/tentti/:id', (req, res, next) => {
   let questions = []
   db.query(
-    'SELECT id,teksti AS text,tentti_id AS test_id,aihe_id AS subject_id FROM kysymys WHERE tentti_id=$1',
+    'SELECT kysymysid AS questionid,teksti AS text,tenttiid AS testid,aiheid AS subjectid FROM kysymys WHERE tenttiid=$1',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
@@ -39,7 +39,7 @@ router.get('/tentti/:id', (req, res, next) => {
     })
 
   db.query(
-    'SELECT id,teksti AS text,kysymys_id AS question_id FROM vaihtoehto where poistettu=false AND kysymys_id IN (SELECT id FROM kysymys where tentti_id=$1)',
+    'SELECT vaihtoehtoid AS optionid,teksti AS text,kysymysid AS questionid FROM vaihtoehto where poistettu=false AND kysymysid IN (SELECT id FROM kysymys where tenttiid=$1)',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
@@ -74,7 +74,7 @@ router.get('/tentti/:id', (req, res, next) => {
 
 router.get('/kysymykset/:id', (req, res, next) => {
   db.query(
-    'SELECT id,teksti AS text,tentti_id AS test_id,aihe_id AS subject_id FROM kysymys where tentti_id=$1',
+    'SELECT kysymysid AS questionid,teksti AS text,tenttiid AS testid,aiheid AS subjectid FROM kysymys where tenttiid=$1',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
@@ -85,7 +85,7 @@ router.get('/kysymykset/:id', (req, res, next) => {
 
 router.get('/vaihtoehdot/:id', (req, res, next) => {
   db.query(
-    'SELECT id,teksti AS text,kysymys_id AS question_id FROM vaihtoehto where kysymys_id=$1',
+    'SELECT vaihtoehtoid AS optionid,teksti AS text,kysymysid AS questionid FROM vaihtoehto where kysymysid=$1',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
@@ -108,7 +108,7 @@ router.post('/tentti', (req, res, next) => {
 
 router.post('/kysymys', (req, res, next) => {
   db.query(
-    "INSERT INTO kysymys (teksti,tentti_id) VALUES ('Uusi kysymys',$1)",
+    "INSERT INTO kysymys (teksti,tenttiid) VALUES ('Uusi kysymys',$1)",
     [req.body.tentti_id],
     (err, dbres) => {
       if (err) {
@@ -120,7 +120,7 @@ router.post('/kysymys', (req, res, next) => {
 
 router.post('/vaihtoehto', (req, res, next) => {
   db.query(
-    "INSERT INTO vaihtoehto (nimi,kysymys_id) VALUES ('Uusi vastausvaihtoehto',$1)",
+    "INSERT INTO vaihtoehto (nimi,kysymysid) VALUES ('Uusi vastausvaihtoehto',$1)",
     [req.body.kysymys_id],
     (err, dbres) => {
       if (err) {
@@ -132,7 +132,7 @@ router.post('/vaihtoehto', (req, res, next) => {
 
 router.put('/tentti/:id', (req, res, next) => {
   db.query(
-    "UPDATE tentti SET nimi=$2 WHERE id=$1",
+    "UPDATE tentti SET nimi=$2 WHERE tenttiid=$1",
     [req.params.id, req.body.nimi],
     (err, dbres) => {
       if (err) {
@@ -144,7 +144,7 @@ router.put('/tentti/:id', (req, res, next) => {
 
 router.put('/kysymys/:id', (req, res, next) => {
   db.query(
-    "UPDATE kysymys SET teksti=$2 WHERE id=$1",
+    "UPDATE kysymys SET teksti=$2 WHERE kysymysid=$1",
     [req.params.id, req.body.teksti],
     (err, dbres) => {
       if (err) {
@@ -156,7 +156,7 @@ router.put('/kysymys/:id', (req, res, next) => {
 
 router.put('/vaihtoehto/:id', (req, res, next) => {
   db.query(
-    "UPDATE vaihtoehto SET teksti=$2 WHERE id=$1",
+    "UPDATE vaihtoehto SET teksti=$2 WHERE vaihtoehtoid=$1",
     [req.params.id, req.body.teksti],
     (err, dbres) => {
       if (err) {
@@ -168,7 +168,7 @@ router.put('/vaihtoehto/:id', (req, res, next) => {
 
 router.delete('/tentti/:id', (req, res, next) => {
   db.query(
-    "UPDATE tentti SET poistettu=true WHERE id=$1",
+    "UPDATE tentti SET poistettu=true WHERE tenttiid=$1",
     [req.params.id],
     (err, dbres) => {
       if (err) {
@@ -180,7 +180,7 @@ router.delete('/tentti/:id', (req, res, next) => {
 
 router.delete('/kysymys/:id', (req, res, next) => {
   db.query(
-    "UPDATE kysymys SET poistettu=true WHERE id=$1",
+    "UPDATE kysymys SET poistettu=true WHERE kysymysid=$1",
     [req.params.id],
     (err, dbres) => {
       if (err) {
@@ -192,7 +192,7 @@ router.delete('/kysymys/:id', (req, res, next) => {
 
 router.delete('/vaihtoehto/:id', (req, res, next) => {
   db.query(
-    "UPDATE vaihtoehto SET poistettu=true WHERE id=$1",
+    "UPDATE vaihtoehto SET poistettu=true WHERE vaihtoehtoid=$1",
     [req.params.id],
     (err, dbres) => {
       if (err) {
@@ -208,7 +208,7 @@ router.delete('/vaihtoehto/:id', (req, res, next) => {
 /* router.get('/', (req, res) => {
   res.send('Hello World!GET')
 }) */
-router.post('/', (req, res) => {
+/* router.post('/', (req, res) => {
   res.send('Hello World!POST')
 })
 router.delete('/', (req, res) => {
@@ -216,7 +216,7 @@ router.delete('/', (req, res) => {
 })
 router.put('/', (req, res) => {
   res.send('INSERT INTO')
-})
+}) */
 
 
 module.exports = router
