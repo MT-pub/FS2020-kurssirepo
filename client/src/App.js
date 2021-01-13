@@ -11,6 +11,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
 
 const initialData = [{
   id: 1,
@@ -221,7 +222,7 @@ function App() {
         <AppBar position="static" color="primary">
           <Toolbar>
             <Button component={Link} to="/">
-              Tentit
+              <FormattedMessage id="app.tests-button" defaultMessage="Tests" description="Tests-button on AppBar"/>
             </Button>
             <Button component={Link} to="/kuvaajat">
               Kuvaajat

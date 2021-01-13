@@ -3,13 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { IntlProvider, addLocaleData } from 'react-intl';
-import locale_fi from 'react-intl/locale-data/fi'
-import locale_en from 'react-intl/locale-data/en'
+import { IntlProvider } from 'react-intl';
 import messages_fi from './translations/fi.json'
 import messages_en from './translations/en.json'
-
-addLocaleData([...locale_fi, ...locale_en])
 
 const messages = {
   'fi': messages_fi,
