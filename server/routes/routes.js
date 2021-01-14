@@ -18,7 +18,7 @@ router.post(
   '/login',
   async (req, res, next) => {
     passport.authenticate(
-      'login',
+      'login', { session: false, successRedirect:'/', failureRedirect:'/login'},
       async (err, user, info) => {
         try {
           if (err || !user) {
@@ -36,7 +36,10 @@ router.post(
               const body = { _id: user._id, email: user.email };
               const token = jwt.sign({ user: body }, 'TOP_SECRET');
 
-              return res.json({ token });
+              
+              res.set('Authorization', 'Bearer ' + token)
+              return res.redirect(200, '/');
+              //return res.json(token)
             }
           );
         } catch (error) {
