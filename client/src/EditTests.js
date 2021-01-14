@@ -2,6 +2,7 @@ import React from 'react'
 import './App.css'
 import { Button, Icon, IconButton } from '@material-ui/core'
 import EditTest from './EditTest'
+import { FormattedMessage } from 'react-intl';
 
 
 function EditTests({ state, dispatch }) {
@@ -19,7 +20,9 @@ function EditTests({ state, dispatch }) {
             className="answer"
             onClick={() => dispatch({ type: "addTest" })}>
             <Icon>add-circle</Icon>
-            <span>&nbsp;Lisää tentti</span>
+            <FormattedMessage id="app.add-test-button" description="Tests-button on AppBar">
+            {txt => <span>&nbsp;{txt}</span>}
+            </FormattedMessage>
           </IconButton>
         </>
       )

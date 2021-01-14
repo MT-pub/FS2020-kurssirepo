@@ -1,5 +1,8 @@
 {
   "app.tests-button": "Tentit",
   "app.graphs-button": "Kuvaajat",
-  "app.control-button": "Hallinta"
+  "app.control-button": "Hallinta",
+  "app.show-answers-button": "Näytä Vastaukset",
+  "app.add-question-button": "Lisää kysymys",
+  "app.add-test-button": "Lisää tentti"
 }

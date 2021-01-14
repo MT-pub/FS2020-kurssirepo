@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
 import {MemoizedDrawQuestion} from './DrawQuestion'
+import { FormattedMessage } from 'react-intl';
 
 function DrawTest({ testData, testIndex, answers, dispatch }) {
 
@@ -17,7 +18,7 @@ console.log(testData)
           <Button key={testData.name + " showAnswers"}
             variant="contained"
             color="primary" onClick={() => { dispatch({type:"setAnswers", answers:true}) }}>
-            Näytä vastaukset
+            <FormattedMessage id="app.show-answers-button" defaultMessage="Show answers" description="Tests-button on AppBar"/>
           </Button>
         </div>}
       </>

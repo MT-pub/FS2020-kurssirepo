@@ -1,5 +1,8 @@
 {
   "app.tests-button": "Tests",
   "app.graphs-button": "Graphs",
-  "app.control-button": "Control"
+  "app.control-button": "Control",
+  "app.show-answers-button": "Show answers",
+  "app.add-question-button": "Add question",
+  "app.add-test-button": "Add test"
 }

@@ -1,4 +1,5 @@
 import { Paper, Checkbox, TextField, IconButton, Icon } from '@material-ui/core'
+import { FormattedMessage } from 'react-intl';
 
 
 function EditTest({ testData, testIndex, dispatch }) {
@@ -84,7 +85,9 @@ function EditTest({ testData, testIndex, dispatch }) {
           onClick={() =>
             dispatch({ type: "addQuestion" })}>
           <Icon>add-circle</Icon>
-          <span>&nbsp;Lisää kysymys</span>
+          <FormattedMessage id="app.add-question-button" description="Tests-button on AppBar">
+            {txt => <span>&nbsp;{txt}</span>}
+            </FormattedMessage>
         </IconButton>
       </>
     )

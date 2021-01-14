@@ -11,7 +11,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 const initialData = [{
   id: 1,
@@ -142,7 +142,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false,   });
+  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false, });
 
   const createRemData = async () => {
     try {
@@ -222,13 +222,13 @@ function App() {
         <AppBar position="static" color="primary">
           <Toolbar>
             <Button component={Link} to="/">
-              <FormattedMessage id="app.tests-button" defaultMessage="Tests" description="Tests-button on AppBar"/>
+              <FormattedMessage id="app.tests-button" defaultMessage="Tests" description="Tests-button on AppBar" />
             </Button>
             <Button component={Link} to="/kuvaajat">
-              Kuvaajat
+              <FormattedMessage id="app.graphs-button" defaultMessage="Graphs" description="Tests-button on AppBar" />
             </Button>
             <Button component={Link} to="/hallinta">
-              Hallinta
+              <FormattedMessage id="app.control-button" defaultMessage="Control" description="Tests-button on AppBar" />
             </Button>
           </Toolbar>
         </AppBar>
