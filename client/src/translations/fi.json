@@ -4,5 +4,6 @@
   "app.control-button": "Hallinta",
   "app.show-answers-button": "Näytä Vastaukset",
   "app.add-question-button": "Lisää kysymys",
-  "app.add-test-button": "Lisää tentti"
+  "app.add-test-button": "Lisää tentti",
+  "error.db-no-fetch": "Tietokannan alustaminen epäonnistui"
 }

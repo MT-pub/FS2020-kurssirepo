@@ -11,7 +11,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const initialData = [{
   id: 1,
@@ -143,6 +143,7 @@ function reducer(state, action) {
 function App() {
 
   const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false, });
+  const intl = useIntl()
 
   const createRemData = async () => {
     try {
@@ -150,7 +151,7 @@ function App() {
       dispatch({ type: "INIT_LIST", data: initialData, fetchData: false })
     }
     catch (exception) {
-      alert("Tietokannan alustaminen epäonnistui")
+      alert(intl.formatMessage({id:'error.db-no-fetch'}))//"Tietokannan alustaminen epäonnistui")
     }
   };
 
