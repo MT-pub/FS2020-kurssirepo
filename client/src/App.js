@@ -5,6 +5,7 @@ import axios from 'axios'
 import DoTests from './DoTests'
 import EditTests from './EditTests'
 import SubjectChart from './Chart'
+import LoginPage from './LoginPage'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,6 +13,7 @@ import {
   Link
 } from "react-router-dom";
 import { FormattedMessage, useIntl } from 'react-intl';
+import Dropzone from 'react-dropzone'
 
 const initialData = [{
   id: 1,
@@ -128,6 +130,9 @@ function reducer(state, action) {
       } */
       //console.log(deepCopy.test)
       return deepCopy
+    case 'fileAccepted':
+      deepCopy.file = 1
+      return deepCopy
     case 'INIT_LIST':
       deepCopy.fetchData = action.fetchData
       deepCopy.data = action.data
@@ -142,7 +147,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, { data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false, });
+  const [state, dispatch] = useReducer(reducer, { file: 0, token: 0, data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false, });
   const intl = useIntl()
 
   const createRemData = async () => {
@@ -151,7 +156,7 @@ function App() {
       dispatch({ type: "INIT_LIST", data: initialData, fetchData: false })
     }
     catch (exception) {
-      alert(intl.formatMessage({id:'error.db-no-fetch'}))//"Tietokannan alustaminen epäonnistui")
+      alert(intl.formatMessage({ id: 'error.db-no-fetch' }))//"Tietokannan alustaminen epäonnistui")
     }
   };
 
@@ -169,7 +174,7 @@ function App() {
     }
     catch (exception) {
       console.log(exception)
-      createRemData()
+      //createRemData()
     }
   };
 
@@ -198,10 +203,40 @@ function App() {
     }
   };
 
+  const uploadFile = async (file) => {
+    let formData = new FormData()
+
+    formData.append("file", file[0])
+
+    console.log(formData.file)
+
+    try {
+      let result = await axios.post("http://localhost:4000/upload", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      //console.log(result)
+      if (result.data == 'Tiedosto vastaanotettu') {
+        //console.log("fetchIf")
+        dispatch({ type: "fileAccepted" })
+      } else {
+        throw new Error("Tiedostoa ei voitu ladata")
+
+      }
+    }
+    catch (exception) {
+      console.log(exception)
+      //createRemData()
+    }
+  }
+
   useEffect(() => {
     //console.log("Haetaan tenttilistaa")
-    fetchRemData()
-  }, [])
+    if (state.token !== 0) {
+      fetchRemData()
+    }
+  }, [state.token])
 
   useEffect(() => {
     console.log("Tallennetaan")
@@ -231,6 +266,28 @@ function App() {
             <Button component={Link} to="/hallinta">
               <FormattedMessage id="app.control-button" defaultMessage="Control" description="Tests-button on AppBar" />
             </Button>
+            {state.token === 0 ?
+              <Button component={Link} to="/login">
+                <FormattedMessage id="app.login-button" defaultMessage="Login" description="Tests-button on AppBar" />
+              </Button> :
+              <Button component={Link} to="/login">
+                <FormattedMessage id="app.logout-button" defaultMessage="Logout" description="Tests-button on AppBar" />
+              </Button>}
+            <div>
+              <Dropzone accept='image/jpeg' multiple={false} onDrop={files => {
+                console.log(files)
+                uploadFile(files)
+              }}>
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <p>Vedä tiedosto tähän tai klikkaa valitaksesi tiedoston</p>
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+            </div>
           </Toolbar>
         </AppBar>
         <div className="page">
@@ -242,7 +299,10 @@ function App() {
               <EditTests state={state} dispatch={dispatch} />
             </Route>
             <Route exact path="/">
-              <DoTests state={state} dispatch={dispatch} />
+              {state.token !== 0 ? <DoTests state={state} dispatch={dispatch} /> : <LoginPage state={state} dispatch={dispatch} />}
+            </Route>
+            <Route>
+              <LoginPage state={state} dispatch={dispatch} />
             </Route>
           </Switch>
         </div>
