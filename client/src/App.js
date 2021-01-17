@@ -208,8 +208,7 @@ function App() {
 
     formData.append("file", file[0])
 
-    console.log(formData.file)
-
+    console.log("post kuva")
     try {
       let result = await axios.post("http://localhost:4000/upload", formData, {
         headers: {
@@ -218,7 +217,7 @@ function App() {
       })
       //console.log(result)
       if (result.data == 'Tiedosto vastaanotettu') {
-        //console.log("fetchIf")
+        console.log("fileAccepted")
         dispatch({ type: "fileAccepted" })
       } else {
         throw new Error("Tiedostoa ei voitu ladata")

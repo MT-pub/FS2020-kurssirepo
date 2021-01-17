@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
   filename: function (req, file, cb) {
 
     let filename = 'testfile.jpeg';
-     req.body.file = filename
+    req.body.file = filename
 
     cb(null, filename)
   }
@@ -44,22 +44,24 @@ router.post('/upload', upload.single('file'), function (req, res) {
   } */
 
   console.log("req.body: ", req.body)
-  console.log("req.body.file: ",req.body.file)
-  console.log("req.body.path: ",req.body.path)
-  console.log("req.file: ",req.file)
+  console.log("req.body.file: ", req.body.file)
+  console.log("req.body.path: ", req.body.path)
+  console.log("req.file: ", req.file)
   //console.log("req.file.size: ",req.file.size)
 
   if (!req.body.file) {
     return res.status(400).send('No files were uploaded.');
   }
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  let newFile = req.file;
-  let tmpPath = req.body.file.path
+  return res.status(200).send('Tiedosto vastaanotettu')
 
-  console.log(newFile)
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  //let newFile = req.file;
+  //let tmpPath = req.body.file.path
+
+  //console.log(newFile)
   //let date = Date.now().toString();
-  let filePath = 'files/testfile.jpeg'
+  //let filePath = 'files/testfile.jpeg'
 
   /* fs.rename(tmpPath, filePath, function (err) {
     if (err) {
@@ -75,7 +77,7 @@ router.post('/upload', upload.single('file'), function (req, res) {
      return res.status(200).send('Tiedosto vastaanotettu')
    }
  }); */
-  console.log("hereweare")
+  //console.log("hereweare")
 });
 
 router.post(

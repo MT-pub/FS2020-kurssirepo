@@ -13,7 +13,7 @@ function LoginPage({ state, dispatch }) {
         Salasana:
       </span>
       <TextField />
-      <img src="../../server/files/testfile.jpeg" />
+      {state.file === 1 ? <img src="http://localhost:4000/static/testfile.jpeg" /> : null}
     </div>
   )
 

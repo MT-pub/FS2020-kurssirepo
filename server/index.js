@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 //parses multipart/form-data
 //app.use(upload.array())
-app.use(express.static(__dirname + '/files')) //
+
 
 app.use(passport.initialize())
 
@@ -36,7 +36,9 @@ const secureRoutes = require('./routes/secureRoutes')
 
 app.use('/', routes)
 
-app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
+//app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
+
+app.use('/static', express.static(__dirname + '/files/')) //static files
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
