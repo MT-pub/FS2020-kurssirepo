@@ -17,7 +17,7 @@ console.log(testData)
         {answers ? null : <div>
           <Button key={testData.name + " showAnswers"}
             variant="contained"
-            color="primary" onClick={() => { dispatch({type:"setAnswers", answers:true}) }}>
+            color="primary" onClick={() => { dispatch({type:"setAnswers", payload:true}) }}>
             <FormattedMessage id="app.show-answers-button" defaultMessage="Show answers" description="Tests-button on AppBar"/>
           </Button>
         </div>}

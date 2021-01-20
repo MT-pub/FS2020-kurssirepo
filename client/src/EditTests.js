@@ -14,14 +14,14 @@ function EditTests({ state, dispatch }) {
           {state.data.map((item, index) =>
             <Button key={"" + index + state.data[index].test}
               color="primary" onClick={() => { dispatch({ type: "setTest", test: index }) }}>
-              {item.test}
+              {item.name}
             </Button>)}
           <IconButton size="medium"
             className="answer"
             onClick={() => dispatch({ type: "addTest" })}>
             <Icon>add-circle</Icon>
             <FormattedMessage id="app.add-test-button" description="Tests-button on AppBar">
-            {txt => <span>&nbsp;{txt}</span>}
+              {txt => <span>&nbsp;{txt}</span>}
             </FormattedMessage>
           </IconButton>
         </>

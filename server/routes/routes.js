@@ -80,11 +80,13 @@ router.post('/upload', upload.single('file'), function (req, res) {
   //console.log("hereweare")
 });
 
+//{ session: false, successRedirect: '/', failureRedirect: '/login' }
 router.post(
   '/login',
   async (req, res, next) => {
+    console.log("received login")
     passport.authenticate(
-      'login', { session: false, successRedirect: '/', failureRedirect: '/login' },
+      'login', { session: false},
       async (err, user, info) => {
         try {
           if (err || !user) {
@@ -103,9 +105,9 @@ router.post(
               const token = jwt.sign({ user: body }, 'TOP_SECRET');
 
 
-              res.set('Authorization', 'Bearer ' + token)
-              return res.redirect(200, '/');
-              //return res.json(token)
+              //res.set('Authorization', 'Bearer ' + token)
+              //return res.redirect(200, '/');
+              return res.json(token)
             }
           );
         } catch (error) {

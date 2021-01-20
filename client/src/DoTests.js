@@ -11,7 +11,7 @@ function DoTests({ state, dispatch }) {
         <Button key={"" + state.data[index].id + state.data[index].name}
           color="primary" onClick={() => {
             dispatch({ type: "setTest", test: index });
-            //dispatch({ type: "setvastaukset", answers: false });
+            dispatch({ type: "setAnswers", payload: false });
           }}
         >
           {item.name}

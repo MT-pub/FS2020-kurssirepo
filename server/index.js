@@ -3,10 +3,20 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 //const multer = require('multer')
+const httpServer = require('http').createServer()
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+})
+const pg = require('pg')
 require('./auth/auth')
 
+var con_string = 'tcp://postgres:FS2020sala@localhost:5432/KurssiDB';
+
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http://localhost:9000'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -14,6 +24,9 @@ var corsOptions = {
 
 const app = express()
 app.use(cors(corsOptions))
+
+
+
 
 //parses application/json
 app.use(express.json())
@@ -24,6 +37,23 @@ app.use(bodyParser.urlencoded({ extended: false }))
 //parses multipart/form-data
 //app.use(upload.array())
 
+app.use('/socket.io', express.static(__dirname + '/node_modules/socket.io')) //static socket.io
+
+var pg_client = new pg.Client(con_string);
+pg_client.connect();
+var query = pg_client.query('LISTEN addedrecord');
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('connected', { connected: true });
+
+  socket.on('ready for data', function (data) {
+    pg_client.on('notification', function (title) {
+      socket.emit('update', { message: title });
+    });
+  });
+});
+
+httpServer.listen(9000)
 
 app.use(passport.initialize())
 
@@ -34,11 +64,13 @@ const secureRoutes = require('./routes/secureRoutes')
 // notice here I'm requiring my database adapter file
 // and not requiring node-postgres directly
 
+app.use('/static', express.static(__dirname + '/files/')) //static files
+
 app.use('/', routes)
 
-//app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
+app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
 
-app.use('/static', express.static(__dirname + '/files/')) //static files
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

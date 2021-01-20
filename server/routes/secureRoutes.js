@@ -4,6 +4,8 @@ const db = require('../db')
 
 const router = express.Router()
 
+
+
 router.get('/tenttilista/:id', (req, res, next) => {
   db.query(
     'SELECT tenttiid,nimi AS name,aloitusaika AS starttime,lopetusaika AS stoptime FROM tentti WHERE tenttiid IN (SELECT tenttiid FROM käyttäjätentti WHERE käyttäjäid=$1)',
@@ -29,7 +31,7 @@ router.get('/tenttilista/:id', (req, res, next) => {
 router.get('/tentti/:id', (req, res, next) => {
   let questions = []
   db.query(
-    'SELECT kysymysid AS questionid,teksti AS text,tenttiid AS testid,aiheid AS subjectid FROM kysymys WHERE tenttiid=$1',
+    'SELECT kysymysid,teksti,tenttiid,aiheid FROM kysymys WHERE tenttiid=$1',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
@@ -39,7 +41,7 @@ router.get('/tentti/:id', (req, res, next) => {
     })
 
   db.query(
-    'SELECT vaihtoehtoid AS optionid,teksti AS text,kysymysid AS questionid FROM vaihtoehto where poistettu=false AND kysymysid IN (SELECT id FROM kysymys where tenttiid=$1)',
+    'SELECT vaihtoehtoid AS optionid,teksti AS text,kysymysid AS questionid FROM vaihtoehto where poistettu=false AND kysymysid IN (SELECT kysymysid FROM kysymys where tenttiid=$1)',
     [req.params.id], (err, dbres) => {
       if (err) {
         return next(err)
