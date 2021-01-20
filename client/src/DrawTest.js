@@ -12,7 +12,7 @@ console.log(testData)
     return (
       <>
         {testData.questions.map((item, index) => {
-          return (<MemoizedDrawQuestion key={"question" + testData.id + item.id} q={item} qIndex={index} testData={testData} testIndex={testIndex} answers={answers} dispatch={dispatch} />);
+          return (<MemoizedDrawQuestion key={"question" + testData.testid + item.id} q={item} qIndex={index} testData={testData} testIndex={testIndex} answers={answers} dispatch={dispatch} />);
         })}
         {answers ? null : <div>
           <Button key={testData.name + " showAnswers"}
