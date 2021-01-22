@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from 'react'
 import './App.css'
 import { Button, AppBar, Toolbar } from '@material-ui/core'
+import { useSnackbar } from 'notistack'
 import axios from 'axios'
 import DoTests from './DoTests'
 import EditTests from './EditTests'
@@ -14,6 +15,10 @@ import {
 } from "react-router-dom";
 import { FormattedMessage, useIntl } from 'react-intl';
 import Dropzone from 'react-dropzone'
+import socketIOClient from 'socket.io-client'
+import { borderRight } from '@material-ui/system'
+const sIOEndpoint = "ws://localhost:9000"
+
 
 const initialData = [{
   id: 1,
@@ -155,6 +160,7 @@ function App() {
 
   const [state, dispatch] = useReducer(reducer, { file: 0, token: 0, data: [], activeTest: "", fetchData: true, saveData: false, answers: false, showChart: false, });
   const intl = useIntl()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   const createRemData = async () => {
     try {
@@ -258,6 +264,30 @@ function App() {
     }
   }
 
+  //endpoint: 'ws://localhost:9000'
+  useEffect(() => {
+    const socket = socketIOClient(sIOEndpoint)
+    socket.on('connected', function (data) {
+      //console.log("Socket.io: Connected")
+      enqueueSnackbar("Socket.io: Connected")
+      socket.emit('ready for data', {});
+    });
+    socket.on('update', function (data) {
+      let notification = JSON.parse(data.message.payload)
+
+      console.log(notification)
+
+      if (notification.type === "insert test")
+        enqueueSnackbar("Uusi tentti luotu tietokantaan")
+      else if (notification.type === "update test")
+        enqueueSnackbar("Tenttiä ")
+        //console.log(data.message.payload);
+
+        // CLEAN UP THE EFFECT
+        return () => socket.disconnect()
+    })
+  }, [])
+
   useEffect(() => {
     //console.log("Haetaan tenttilistaa")
     if (state.token !== 0) {
@@ -280,6 +310,7 @@ function App() {
   //console.log(state.data)
 
   return (
+
     <Router>
       <div className="App">
         <AppBar position="static" color="primary">

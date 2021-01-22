@@ -41,9 +41,10 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  <script type="text/JavaScript" src="http://localhost:4000/socket.io/client-dist/socket.io.js"></script>
+  <!--
+    <script type="text/JavaScript" src="http://localhost:4000/socket.io/client-dist/socket.io.js"></script>
   <script>
-    var socket = io.connect('http://localhost:9000');
+    var socket = io.connect('ws://localhost:9000');
     socket.on('connected', function (data) {
       console.log("Socket.io: Connected")
       socket.emit('ready for data', {});
@@ -52,6 +53,7 @@
       console.log(data.message.payload);
     });
   </script>
+-->
 </body>
 
 </html>

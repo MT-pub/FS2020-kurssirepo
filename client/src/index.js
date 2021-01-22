@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { IntlProvider } from 'react-intl';
 import messages_fi from './translations/fi.json'
 import messages_en from './translations/en.json'
+import { SnackbarProvider } from 'notistack'
 
 const messages = {
   'fi': messages_fi,
@@ -16,7 +17,9 @@ const language = navigator.language.split(/[-_]/)[0] //language without region c
 ReactDOM.render(
   <React.StrictMode>
     <IntlProvider locale={language} messages={messages[language]}>
-      <App />
+      <SnackbarProvider maxSnack={3} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }} variant="info">
+        <App />
+      </SnackbarProvider>
     </IntlProvider>
   </React.StrictMode>,
   document.getElementById('root')

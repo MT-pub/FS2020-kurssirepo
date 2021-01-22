@@ -47,11 +47,15 @@ io.sockets.on('connection', function (socket) {
   socket.emit('connected', { connected: true });
 
   socket.on('ready for data', function (data) {
-    pg_client.on('notification', function (title) {
-      socket.emit('update', { message: title });
+    pg_client.on('notification', function (sqlMes) {
+      //console.log("SQL notification: type: "+sqlMes.payload.type+" title: "+sqlMes.payload.nimi)
+      console.log(sqlMes)
+      socket.emit('update', { message: sqlMes });
     });
   });
 });
+
+//setInterval
 
 httpServer.listen(9000)
 

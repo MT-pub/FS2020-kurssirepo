@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 function DrawTest({ testData, testIndex, answers, dispatch }) {
 
-console.log(testData)
+//console.log(testData)
 
   if (testIndex !== "" && testData.questions) {
     //console.log(props.test.test)
