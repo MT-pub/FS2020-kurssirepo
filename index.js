@@ -13,7 +13,8 @@ const io = require('socket.io')(httpServer, {
 const pg = require('pg')
 require('./auth/auth')
 
-var con_string = 'tcp://postgres:FS2020sala@localhost:5432/KurssiDB';
+var con_string = require('./db').con_string
+//'tcp://postgres:FS2020sala@localhost:5432/KurssiDB';
 
 var corsOptions = {
   origin: ['http://localhost:4000'],
