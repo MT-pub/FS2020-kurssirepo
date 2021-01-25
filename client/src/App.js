@@ -17,8 +17,27 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import Dropzone from 'react-dropzone'
 import socketIOClient from 'socket.io-client'
 import { borderRight } from '@material-ui/system'
-const sIOEndpoint = "ws://localhost:9000"
 
+
+var sIOEndpoint = null
+var path = null
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    path = 'https://fs2020-tentti.herokuapp.com/'
+    sIOEndpoint = "ws://fs2020-tentti.herokuapp.com/"
+    break
+  case 'development':
+    path = 'http://localhost:4000/'
+    sIOEndpoint = 'ws://localhost:4000'
+    break
+  case 'test':
+    path = 'http://localhost:4000/'
+    sIOEndpoint = 'ws://localhost:4000'
+    break
+  default:
+    throw "Environment not properly set!"
+}
 
 const initialData = [{
   id: 1,
@@ -164,7 +183,7 @@ function App() {
 
   const createRemData = async () => {
     try {
-      await axios.post("http://localhost:3001/tests", initialData, { headers: { Authorization: 'Bearer ' + state.token } })
+      await axios.post(path+"tests", initialData, { headers: { Authorization: 'Bearer ' + state.token } })
       dispatch({ type: "INIT_LIST", data: initialData, fetchData: false })
     }
     catch (exception) {
@@ -174,7 +193,7 @@ function App() {
 
   const fetchRemData = async () => {
     try {
-      let result = await axios.get("http://localhost:4000/tenttilista/" + "1", { headers: { 'Authorization': 'Bearer ' + state.token } })
+      let result = await axios.get(path+"tenttilista/" + "1", { headers: { 'Authorization': 'Bearer ' + state.token } })
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
@@ -192,8 +211,8 @@ function App() {
 
   const fetchTest = async (testId) => {
     try {
-      console.log("GET http://localhost:4000/tentti/" + testId)
-      let result = await axios.get("http://localhost:4000/tentti/" + testId, { headers: { 'Authorization': 'Bearer ' + state.token } })
+      console.log("GET "+path+"tentti/" + testId)
+      let result = await axios.get(path+"tentti/" + testId, { headers: { 'Authorization': 'Bearer ' + state.token } })
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
@@ -209,7 +228,7 @@ function App() {
 
   const saveTest = async () => {
     try {
-      await axios.put("http://localhost:4000/tentit", state.data[state.activeTest], { headers: { 'Authorization': 'Bearer ' + state.token } })
+      await axios.put(path+"tentit", state.data[state.activeTest], { headers: { 'Authorization': 'Bearer ' + state.token } })
     }
     catch (exception) {
       console.log("Datan päivitys ei onnistunut ", exception)
@@ -222,7 +241,7 @@ function App() {
     e.preventDefault()
 
     try {
-      let response = await axios.post("http://localhost:4000/login", { email: user, password: pw })
+      let response = await axios.post(path+"login", { email: user, password: pw })
 
       console.log(response.data)
 
@@ -243,7 +262,7 @@ function App() {
 
     console.log("post kuva")
     try {
-      let result = await axios.post("http://localhost:4000/upload", formData, {
+      let result = await axios.post(path+"upload", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': 'Bearer ' + state.token
@@ -281,10 +300,10 @@ function App() {
         enqueueSnackbar("Uusi tentti luotu tietokantaan")
       else if (notification.type === "update test")
         enqueueSnackbar("Tenttiä ")
-        //console.log(data.message.payload);
+      //console.log(data.message.payload);
 
-        // CLEAN UP THE EFFECT
-        return () => socket.disconnect()
+      // CLEAN UP THE EFFECT
+      return () => socket.disconnect()
     })
   }, [])
 

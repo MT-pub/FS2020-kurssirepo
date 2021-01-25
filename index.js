@@ -3,30 +3,49 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 //const multer = require('multer')
-const httpServer = require('http').createServer()
-const io = require('socket.io')(httpServer, {
-  cors: {
-    origin: "http://localhost:4000",
-    methods: ["GET", "POST"]
-  }
-})
+
 const pg = require('pg')
 require('./auth/auth')
 
 var con_string = require('./db').con_string
 //'tcp://postgres:FS2020sala@localhost:5432/KurssiDB';
 
-var corsOptions = {
+const port = process.env.PORT || 4000
+
+const whitelist = ['http://localhost:4000']; // list of allow domain
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        if (whitelist.indexOf(origin) === -1) {
+            var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}
+
+/* var corsOptions = {
   origin: ['http://localhost:4000'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+} */
 
 //var upload = multer()
 
 const app = express()
 app.use(cors(corsOptions))
 
-
+const httpServer = require('http').createServer(app)
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: "http://localhost:4000",
+    methods: ["GET", "POST"]
+  }
+})
 
 
 //parses application/json
@@ -60,11 +79,12 @@ io.sockets.on('connection', function (socket) {
 
 //setInterval
 
-httpServer.listen(9000)
+//httpServer.listen(9000)
 
 app.use(passport.initialize())
 
-const port = 4000
+
+
 
 const routes = require('./routes/routes')
 const secureRoutes = require('./routes/secureRoutes')
