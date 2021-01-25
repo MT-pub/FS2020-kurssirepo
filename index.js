@@ -6,7 +6,7 @@ const passport = require('passport')
 const httpServer = require('http').createServer()
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:4000",
     methods: ["GET", "POST"]
   }
 })
@@ -16,7 +16,7 @@ require('./auth/auth')
 var con_string = 'tcp://postgres:FS2020sala@localhost:5432/KurssiDB';
 
 var corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:9000'],
+  origin: ['http://localhost:4000'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
