@@ -39,6 +39,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/socket.io', express.static(__dirname + '/node_modules/socket.io')) //static socket.io
 
+app.use(express.static('./client/build'))
+
 var pg_client = new pg.Client(con_string);
 pg_client.connect();
 var query = pg_client.query('LISTEN addedrecord');
@@ -74,7 +76,7 @@ app.use('/', routes)
 
 app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
 
-
+app.use('*', __dirname+'/client/build/index.html')
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
