@@ -12,32 +12,25 @@ var con_string = require('./db').con_string
 
 const port = process.env.PORT || 4000
 
-const whitelist = ['http://localhost:4000']; // list of allow domain
 
-const corsOptions = {
-    origin: function (origin, callback) {
-        if (!origin) {
-            return callback(null, true);
-        }
 
-        if (whitelist.indexOf(origin) === -1) {
-            var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    }
+var corsOptions = null
+
+if (process.env.HEROKU) {
+  corsOptions = {
+    origin: ['https://fs2020-tentti.herokuapp.com'],
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 }
-
-/* var corsOptions = {
+else {
   origin: ['http://localhost:4000'],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-} */
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 //var upload = multer()
 
 const app = express()
-app.use(cors(corsOptions))
+app.use(cors())
 
 const httpServer = require('http').createServer(app)
 const io = require('socket.io')(httpServer, {
