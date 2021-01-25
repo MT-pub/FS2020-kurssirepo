@@ -76,7 +76,9 @@ app.use('/', routes)
 
 app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
 
-app.use('*', __dirname+'/client/build/index.html')
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
