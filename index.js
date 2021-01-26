@@ -19,13 +19,13 @@ var corsOptions = null
 
 if (process.env.HEROKU) {
   corsOptions = {
-    origin: ['https://fs2020-tentti.herokuapp.com'],
+    origin: ['*'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 }
 else {
   corsOptions = {
-    origin: ['http://localhost:4000'],
+    origin: ['*'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 }
@@ -55,7 +55,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 //parses multipart/form-data
 //app.use(upload.array())
 
-app.use('/socket.io', express.static(__dirname + '/node_modules/socket.io')) //static socket.io
+//app.use('/socket.io', express.static(__dirname + '/node_modules/socket.io')) //static socket.io
 
 app.use(express.static('./client/build'))
 
@@ -64,6 +64,7 @@ pg_client.connect();
 var query = pg_client.query('LISTEN addedrecord');
 
 io.sockets.on('connection', function (socket) {
+  console.log("connected")
   socket.emit('connected', { connected: true });
 
   socket.on('ready for data', function (data) {
