@@ -11,7 +11,7 @@ require('./auth/auth')
 var con_string = require('./db').con_string
 //'tcp://postgres:FS2020sala@localhost:5432/KurssiDB';
 
-const port = process.env.HEROKU ? process.env.PORT : 4000
+const port = process.env.PORT || 4000
 
 
 
