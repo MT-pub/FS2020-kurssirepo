@@ -90,13 +90,14 @@ const secureRoutes = require('./routes/secureRoutes')
 // notice here I'm requiring my database adapter file
 // and not requiring node-postgres directly
 
-app.use('/static', express.static(__dirname + '/files/')) //static files
+//app.use('/static', express.static(__dirname + '/files/')) //static files
 
 app.use('/', routes)
 
 app.use('/', passport.authenticate('jwt', { session: false }), secureRoutes);
 
 app.use('*', (req, res) => {
+  console.log("tässänäin")
   res.sendFile(path.join(__dirname + '/client/build/index.html'))
 })
 
