@@ -7,7 +7,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "dev-start": "set NODE_ENV=production&& node index.js",
+    "dev-start": "SET NODE_ENV=development&& node index.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

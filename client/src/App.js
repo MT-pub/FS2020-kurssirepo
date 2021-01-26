@@ -28,10 +28,12 @@ var path = null
 
 switch (process.env.NODE_ENV) {
   case 'production':
+    console.log("production NODE_ENV")
     path = 'https://fs2020-tentti.herokuapp.com/'
     sIOEndpoint = "http://fs2020-tentti.herokuapp.com/"
     break
   case 'development':
+    console.log("development NODE_ENV")
     path = 'http://localhost:4000/'
     sIOEndpoint = 'http://localhost:4000'
     break
