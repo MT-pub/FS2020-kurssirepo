@@ -23,26 +23,24 @@ var sIOEndpoint = null
 var path = null
 
 
-if (process.env.HEROKU) {
-  path = 'https://fs2020-tentti.herokuapp.com/'
-  sIOEndpoint = "http://fs2020-tentti.herokuapp.com/"
-} else {
-  switch (process.env.NODE_ENV) {
-    case 'production':
-      path = 'http://localhost:4000/'
-      sIOEndpoint = 'http://localhost:4000'
-      break
-    case 'development':
-      path = 'http://localhost:4000/'
-      sIOEndpoint = 'http://localhost:4000'
-      break
-    case 'test':
-      path = 'http://localhost:4000/'
-      sIOEndpoint = 'http://localhost:4000'
-      break
-    default:
-      throw "Environment not properly set!"
-  }
+
+
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    path = 'https://fs2020-tentti.herokuapp.com/'
+    sIOEndpoint = "http://fs2020-tentti.herokuapp.com/"
+    break
+  case 'development':
+    path = 'http://localhost:4000/'
+    sIOEndpoint = 'http://localhost:4000'
+    break
+  case 'test':
+    path = 'http://localhost:4000/'
+    sIOEndpoint = 'http://localhost:4000'
+    break
+  default:
+    throw "Environment not properly set!"
 }
 
 const initialData = [{
@@ -291,29 +289,32 @@ function App() {
 
   //endpoint: 'ws://localhost:9000'
   useEffect(() => {
-    if(state.token !== 0) {const socket = socketIOClient(sIOEndpoint, {
-      extraHeaders: {
-        Authorization: "Bearer "+state.token
-    }})
-    socket.on('connected', function (data) {
-      //console.log("Socket.io: Connected")
-      enqueueSnackbar("Socket.io: Connected")
-      socket.emit('ready for data', {});
-    });
-    socket.on('update', function (data) {
-      let notification = JSON.parse(data.message.payload)
+    if (state.token !== 0) {
+      const socket = socketIOClient(sIOEndpoint, {
+        extraHeaders: {
+          Authorization: "Bearer " + state.token
+        }
+      })
+      socket.on('connected', function (data) {
+        //console.log("Socket.io: Connected")
+        enqueueSnackbar("Socket.io: Connected")
+        socket.emit('ready for data', {});
+      });
+      socket.on('update', function (data) {
+        let notification = JSON.parse(data.message.payload)
 
-      console.log(notification)
+        console.log(notification)
 
-      if (notification.type === "insert test")
-        enqueueSnackbar("Uusi tentti luotu tietokantaan")
-      else if (notification.type === "update test")
-        enqueueSnackbar("Tenttiä ")
-      //console.log(data.message.payload);
+        if (notification.type === "insert test")
+          enqueueSnackbar("Uusi tentti luotu tietokantaan")
+        else if (notification.type === "update test")
+          enqueueSnackbar("Tenttiä ")
+        //console.log(data.message.payload);
 
-      // CLEAN UP THE EFFECT
-      return () => socket.disconnect()
-    })}
+        // CLEAN UP THE EFFECT
+        return () => socket.disconnect()
+      })
+    }
   }, [state.token])
 
   useEffect(() => {
