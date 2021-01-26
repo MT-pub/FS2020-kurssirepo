@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 //const multer = require('multer')
+const path = require('path')
 
 const pg = require('pg')
 require('./auth/auth')
@@ -32,16 +33,18 @@ else {
 //var upload = multer()
 
 const app = express()
-app.use(cors())
+app.use(cors(corsOptions))
 
 const httpServer = require('http').createServer(app)
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: "http://localhost:4000",
-    methods: ["GET", "POST"]
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Authorization"]
   }
 })
 
+//const io = require('socket.io')(app)
 
 //parses application/json
 app.use(express.json())

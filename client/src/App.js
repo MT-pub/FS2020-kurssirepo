@@ -22,21 +22,27 @@ import { borderRight } from '@material-ui/system'
 var sIOEndpoint = null
 var path = null
 
-switch (process.env.NODE_ENV) {
-  case 'production':
-    path = 'https://fs2020-tentti.herokuapp.com/'
-    sIOEndpoint = "http://fs2020-tentti.herokuapp.com/"
-    break
-  case 'development':
-    path = 'http://localhost:4000/'
-    sIOEndpoint = 'ws://localhost:4000'
-    break
-  case 'test':
-    path = 'http://localhost:4000/'
-    sIOEndpoint = 'ws://localhost:4000'
-    break
-  default:
-    throw "Environment not properly set!"
+
+if (process.env.HEROKU) {
+  path = 'https://fs2020-tentti.herokuapp.com/'
+  sIOEndpoint = "http://fs2020-tentti.herokuapp.com/"
+} else {
+  switch (process.env.NODE_ENV) {
+    case 'production':
+      path = 'http://localhost:4000/'
+      sIOEndpoint = 'http://localhost:4000'
+      break
+    case 'development':
+      path = 'http://localhost:4000/'
+      sIOEndpoint = 'http://localhost:4000'
+      break
+    case 'test':
+      path = 'http://localhost:4000/'
+      sIOEndpoint = 'http://localhost:4000'
+      break
+    default:
+      throw "Environment not properly set!"
+  }
 }
 
 const initialData = [{
@@ -183,7 +189,7 @@ function App() {
 
   const createRemData = async () => {
     try {
-      await axios.post(path+"tests", initialData, { headers: { Authorization: 'Bearer ' + state.token } })
+      await axios.post(path + "tests", initialData, { headers: { Authorization: 'Bearer ' + state.token } })
       dispatch({ type: "INIT_LIST", data: initialData, fetchData: false })
     }
     catch (exception) {
@@ -193,7 +199,7 @@ function App() {
 
   const fetchRemData = async () => {
     try {
-      let result = await axios.get(path+"tenttilista/" + "1", { headers: { 'Authorization': 'Bearer ' + state.token } })
+      let result = await axios.get(path + "tenttilista/" + "1", { headers: { 'Authorization': 'Bearer ' + state.token } })
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
@@ -211,8 +217,8 @@ function App() {
 
   const fetchTest = async (testId) => {
     try {
-      console.log("GET "+path+"tentti/" + testId)
-      let result = await axios.get(path+"tentti/" + testId, { headers: { 'Authorization': 'Bearer ' + state.token } })
+      console.log("GET " + path + "tentti/" + testId)
+      let result = await axios.get(path + "tentti/" + testId, { headers: { 'Authorization': 'Bearer ' + state.token } })
       //console.log(result)
       if (result.data.length > 0) {
         //console.log("fetchIf")
@@ -228,7 +234,7 @@ function App() {
 
   const saveTest = async () => {
     try {
-      await axios.put(path+"tentit", state.data[state.activeTest], { headers: { 'Authorization': 'Bearer ' + state.token } })
+      await axios.put(path + "tentit", state.data[state.activeTest], { headers: { 'Authorization': 'Bearer ' + state.token } })
     }
     catch (exception) {
       console.log("Datan päivitys ei onnistunut ", exception)
@@ -241,7 +247,7 @@ function App() {
     e.preventDefault()
 
     try {
-      let response = await axios.post(path+"login", { email: user, password: pw })
+      let response = await axios.post(path + "login", { email: user, password: pw })
 
       console.log(response.data)
 
@@ -262,7 +268,7 @@ function App() {
 
     console.log("post kuva")
     try {
-      let result = await axios.post(path+"upload", formData, {
+      let result = await axios.post(path + "upload", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': 'Bearer ' + state.token
@@ -285,7 +291,10 @@ function App() {
 
   //endpoint: 'ws://localhost:9000'
   useEffect(() => {
-    const socket = socketIOClient(sIOEndpoint)
+    if(state.token !== 0) {const socket = socketIOClient(sIOEndpoint, {
+      extraHeaders: {
+        Authorization: "Bearer "+state.token
+    }})
     socket.on('connected', function (data) {
       //console.log("Socket.io: Connected")
       enqueueSnackbar("Socket.io: Connected")
@@ -304,8 +313,8 @@ function App() {
 
       // CLEAN UP THE EFFECT
       return () => socket.disconnect()
-    })
-  }, [])
+    })}
+  }, [state.token])
 
   useEffect(() => {
     //console.log("Haetaan tenttilistaa")
