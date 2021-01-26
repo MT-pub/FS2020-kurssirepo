@@ -35,14 +35,14 @@ else {
 const app = express()
 app.use(cors(corsOptions))
 
-const httpServer = require('http').createServer(app)
+/* const httpServer = require('http').createServer(app)
 const io = require('socket.io')(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["Authorization"]
   }
-})
+}) */
 
 //const io = require('socket.io')(app)
 
@@ -59,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(express.static('./client/build'))
 
-var pg_client = new pg.Client(con_string);
+/* var pg_client = new pg.Client(con_string);
 pg_client.connect();
 var query = pg_client.query('LISTEN addedrecord');
 
@@ -74,7 +74,7 @@ io.sockets.on('connection', function (socket) {
       socket.emit('update', { message: sqlMes });
     });
   });
-});
+}); */
 
 //setInterval
 
